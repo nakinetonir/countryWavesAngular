@@ -1,0 +1,19 @@
+ 
+ <div class="btn-group">
+    <button type="button" class="btn btn-primary" (click)="mostrar('ano')">Por año</button>
+    <button *ngIf="mostrarBotoMes" type="button" class="btn btn-primary" (click)="mostrar('mes')">Por mes (mayores subidas)</button>
+  </div>
+ <div *ngIf="mostrarAno">
+    <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" [(update)]="datosOk"
+    style="width: 80%; height: 80%; display: block;">
+</highcharts-chart>
+ </div>
+<div *ngIf="mostrarMes"  class="graficas__body">
+    <div *ngFor="let datos of meses; let i = index ">
+    <highcharts-chart [Highcharts]="highcharts" [options]="options[i]" 
+        style="width: 80%; height: 80%; display: block;">
+    </highcharts-chart>
+</div>
+
+</div>
+
