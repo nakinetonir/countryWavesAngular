@@ -70,7 +70,7 @@ export class GraficasComponent implements OnInit {
       type: 'column'
     },
     title: {
-      text: 'Casos de coronavirus'
+      text: ''
     },
     subtitle: {
       text: ''
@@ -125,7 +125,7 @@ export class GraficasComponent implements OnInit {
           type: 'column'
         },
         title: {
-          text: 'Casos de coronavirus'
+          text: ''
         },
         subtitle: {
           text: ''
