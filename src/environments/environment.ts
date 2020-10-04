@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endpoint : 'http://ima.pythonanywhere.com/',
+  endpoint : 'https://ima.pythonanywhere.com/',
   postDataCountry : '/postDataCountry'
 };
 
