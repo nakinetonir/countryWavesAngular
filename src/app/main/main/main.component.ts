@@ -104,7 +104,7 @@ export class MainComponent implements OnInit {
 
     }
     else if (size <= this.table) {
-      this.tamano = "60%";
+      this.tamano = "100%";
 
     }
     else if (size <= this.desktop) {
