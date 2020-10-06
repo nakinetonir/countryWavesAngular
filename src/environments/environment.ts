@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endpoint : 'https://ima.pythonanywhere.com/',
+  endpoint : 'https://imarau.pythonanywhere.com//',
   postDataCountry : '/postDataCountry'
 };
 
