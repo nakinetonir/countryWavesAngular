@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   endpoint : 'https://imarau.pythonanywhere.com//',
+  //endpoint : 'http://localhost:5000//',
   postDataCountry : '/postDataCountry'
 };
 

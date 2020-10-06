@@ -17,6 +17,7 @@ export class MainComponent implements OnInit {
   fechaMes
   country
   datosPorMes
+  meseString
   movil: number = 320;
   table: number = 740;
   desktop: number = 980
@@ -45,8 +46,11 @@ export class MainComponent implements OnInit {
           this.fechaTotal = JSON.parse(x["totalDatos"]).datosTotal
           this.datosMes = JSON.parse(x["totalMeses"]).datos
           this.fechaMes = JSON.parse(x["totalMeses"]).fecha
+          this.meseString = JSON.parse(x["totalMeses"]).MesDate
           this.country = event
-          this.datosProcessMes(this.datosMes, this.fechaMes)
+          let disntintos = this.disntintos(this.meseString)
+          console.log(disntintos)
+          this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString)
           this.datosProcess(this.datosTotal, this.fechaTotal)
 
         }
@@ -68,27 +72,34 @@ export class MainComponent implements OnInit {
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
-  datosProcessMes(datos, fecha) {
+  datosProcessMes(datos, fecha, meseString) {
     let listadoDatosTotal: String[][] = [];
     let listadoDatos = []
     let j = 0
+    let mesAnterior
     let tamano = Object.keys(datos).length
-    // tslint:disable-next-line: forin
     for (let i in datos) {
-      if (parseInt(i) % 30 == 0 && parseInt(i) != 0) {
+      let index = parseInt(i)
+      if(index==0)
+      {
+        mesAnterior=meseString[index]
+      }
+      if (mesAnterior!=meseString[index]) {
         listadoDatosTotal[j] = listadoDatos
         listadoDatos = []
         j = j + 1;
       }
-
+     
+      mesAnterior=meseString[index]
       let arrayStgring: string[] = [];
-      arrayStgring.push(fecha[i])
-      arrayStgring.push(datos[i])
+      arrayStgring.push(fecha[index])
+      arrayStgring.push(datos[index])
       listadoDatos.push(arrayStgring);
-
-      if (parseInt(i) == tamano - 1) {
+      if(index+1 == tamano)
+      {
         listadoDatosTotal[j] = listadoDatos
       }
+      
     }
 
     this.datosPorMes = listadoDatosTotal
@@ -121,5 +132,19 @@ export class MainComponent implements OnInit {
 
 
   }
+  disntintos(datos)
+  {
+    var distinct = []
+    for (var i = 0; i < datos.length; i++)
+    {
+      if(distinct.filter(x=>x==datos[i])[0].length==0)
+        {
+          distinct.push(datos[i].age)
+        }
+    }
+     return distinct
+          
+  }
+ 
 
 }
