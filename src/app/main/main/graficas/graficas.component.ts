@@ -21,10 +21,12 @@ export class GraficasComponent implements OnInit {
   datosOk: boolean = false
   highcharts: typeof Highcharts = Highcharts;
   meses
+  mesesArray
   options = []
   mostrarAno :boolean = true;
   mostrarMes : boolean = false;
   mostrarBotoMes : boolean = false;
+  totalDeCasos
   @Input() set datos (datos) {
     if(datos) {
       this.chartOptions.series[0].data = datos;
@@ -65,6 +67,33 @@ export class GraficasComponent implements OnInit {
   get close() {
     return this.close;
   }
+  @Input() set mesesFor (meses) {
+    if(meses) {
+     this.mesesArray = meses
+     if(this.options)
+     {
+      for (let op in this.mesesArray)
+      {
+        this.options[op].title.text = this.mesesArray[op];
+      }
+     }
+     
+    }
+  }
+  get mesesFor() {
+    return this.mesesArray;
+  }
+
+  @Input() set totalCasos (totalCasos) {
+    if(totalCasos) {
+     this.totalDeCasos = totalCasos
+     this.chartOptions.title.text = "El total de casos actualizado: "+this.totalDeCasos
+    }
+  }
+  get totalCasos() {
+    return this.totalDeCasos;
+  }
+
   chartOptions = {
     chart: {
       type: 'column'

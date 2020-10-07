@@ -24,6 +24,8 @@ export class MainComponent implements OnInit {
   wide: number = 1300
   close: boolean = false;
   tamano = "35%"
+  totalCasos;
+  meses : string[]
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     console.log(event.target.innerWidth);
@@ -47,6 +49,7 @@ export class MainComponent implements OnInit {
           this.datosMes = JSON.parse(x["totalMeses"]).datos
           this.fechaMes = JSON.parse(x["totalMeses"]).fecha
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
+          this.totalCasos = JSON.parse(x["totalCasos"]);
           this.country = event
           let disntintos = this.disntintos(this.meseString)
           console.log(disntintos)
@@ -78,16 +81,19 @@ export class MainComponent implements OnInit {
     let j = 0
     let mesAnterior
     let tamano = Object.keys(datos).length
+    let mesesFor: string[] = []
     for (let i in datos) {
       let index = parseInt(i)
       if(index==0)
       {
         mesAnterior=meseString[index]
+        mesesFor[j]=meseString[index]
       }
       if (mesAnterior!=meseString[index]) {
         listadoDatosTotal[j] = listadoDatos
         listadoDatos = []
         j = j + 1;
+        mesesFor[j]=meseString[index]
       }
      
       mesAnterior=meseString[index]
@@ -103,6 +109,7 @@ export class MainComponent implements OnInit {
     }
 
     this.datosPorMes = listadoDatosTotal
+    this.meses = mesesFor;
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
