@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 
 
@@ -20,7 +20,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class MainService {
-  baseUrl = environment.endpoint;
+  baseUrl = environment.urlServer;
   modal = new BehaviorSubject(false);
   constructor(private http: HttpClient) { }
 

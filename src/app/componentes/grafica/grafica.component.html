@@ -1,0 +1,43 @@
+<div class="container">
+  <br/>
+  <div class="row">
+    <div class="col-md-3 align-self-center">
+
+      <!--
+      <p-radioButton (click)="getGrafica('area_parcela')" name="groupname" value="area_parcela" label="Area Parcela"></p-radioButton>
+      <p-radioButton (click)="getGrafica('n_chimeneas')" name="groupname" value="n_chimeneas" label="Nº Chimeneas">Nº Chimeneas</p-radioButton>
+      <p-radioButton (click)="getGrafica('n_cocinas')" name="groupname" value="n_cocinas" label="Nº Cocinas"></p-radioButton>
+      <p-radioButton (click)="getGrafica('n_dormitorios_sobre_suelo')" name="groupname" value="n_dormitorios_sobre_suelo" label="Nº Dormitorios"></p-radioButton>
+      <p-radioButton (click)="getGrafica('area_habitable_sobre_suelo')" name="groupname" value="area_habitable_sobre_suelo" label="Area habitable"></p-radioButton>
+      <p-radioButton (click)="getGrafica('calidad_general')" name="groupname" value="calidad_general" label="Calidad general"></p-radioButton>-->
+      <div  class="col-md-8" >
+      <div class="form-group row">
+        <button  class="btn btn-outline-primary btn-block"  (click)="getGrafica('area_parcela')">Area Parcela</button>
+      </div>
+      <div class="form-group row">
+        <button  class="btn btn-outline-primary btn-block"  (click)="getGrafica('n_chimeneas')">Nº Chimeneas</button>
+      </div>
+      <div class="form-group row">
+        <button  class="btn btn-outline-primary btn-block"  (click)="getGrafica('n_cocinas')">Nº Cocinas</button>
+      </div>
+      <div class="form-group row">
+        <button  class="btn btn-outline-primary btn-block"  (click)="getGrafica('n_dormitorios_sobre_suelo')">Nº Dormitorios</button>
+      </div>
+      <div class="form-group row">
+        <button  class="btn btn-outline-primary btn-block"  (click)="getGrafica('area_habitable_sobre_suelo')">Area habitable</button>
+      </div>
+      <div class="form-group row">
+        <button  class="btn btn-outline-primary btn-block"  (click)="getGrafica('calidad_general')">Calidad general</button>
+      </div>
+    </div>
+    </div>
+    <div class="col-md-9">
+      <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" [(update)]="datosOk"
+        style="width: 100%; height: 400px; display: block;">
+      </highcharts-chart>
+    </div>
+  </div>
+</div>
+
+
+

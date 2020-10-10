@@ -1,0 +1,10 @@
+.encima {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 100px;
+  height: 100px;
+  z-index: 1;
+}

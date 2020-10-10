@@ -1,0 +1,89 @@
+<div clas="container-fluid">
+
+  <div class="row justify-content-center">
+    <div class="btn-group" role="group">
+      <button class="btn btn-outline-primary" (click)="mostrar(4)">Filtro</button>
+      <button class="btn btn-outline-primary" (click)="mostrar(1)">Contador</button>
+      <button class="btn btn-outline-primary" (click)="mostrar(2)">Bigramas</button>
+      <button class="btn btn-outline-primary" (click)="mostrar(3)">Trigramas</button>
+
+    </div>
+
+  </div>
+  <div class="encima" [hidden]="!spinner">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <p-progressSpinner ></p-progressSpinner>
+  </div>
+  <div class="row justify-content-center">
+    <br/>
+    <br/>
+
+    <div class="col-md-11" [hidden]="!uno">
+      <div class="row">
+        <div class="col-md-6">
+          <app-graficas [configuracion]="chartOptions" [datos]="listWordCount"></app-graficas>
+        </div>
+        <div class="col-md-6">
+          <app-graficas [configuracion]="chartOptionsWorDataTotal" [datos]="listWordCountTotal"></app-graficas>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="col-md-11" [hidden]="!dos">
+      <div class="row">
+        <div class="col-md-6">
+          <app-graficas [configuracion]="chartOptionsListatodosbigrm" [datos]="listListatodosbigrm"></app-graficas>
+        </div>
+        <div class="col-md-6">
+          <app-graficas [configuracion]="chartOptionsListatodosbigrmTotal" [datos]="listListatodosbigrmTotal">
+          </app-graficas>
+        </div>
+      </div>
+<s></s>
+
+    </div>
+    <div class="col-md-11" [hidden]="!tres">
+      <div class="row">
+        <div class="col-md-6">
+          <app-graficas [configuracion]="chartOptionsListatodostrigrm" [datos]="listListatodostrigrm"></app-graficas>
+        </div>
+        <div class="col-md-6">
+          <app-graficas [configuracion]="chartOptionsListatodostrigrmTotal" [datos]="listListatodostrigrmTotal">
+          </app-graficas>
+        </div>
+      </div>
+
+
+
+    </div>
+    <div class="col-md-11 col-md-offset-2" [hidden]="!cuatro">
+      <br/>
+      <br/>
+      <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+          <form [formGroup]="filtroGroup">
+            <div class="input-group">
+              <input formControlName="filtro" class="form-control" placeholder="filtro">
+              <button class="btn btn-success" (click)="enviarFiltro()">Filtrar</button>
+           </div>
+
+
+
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+

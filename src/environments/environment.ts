@@ -4,8 +4,12 @@
 
 export const environment = {
   production: false,
-  endpoint : 'https://imarau.pythonanywhere.com//',
-  //endpoint : 'http://localhost:5000//',
+  urlServer: 'https://imarau.pythonanywhere.com/',
+  getDatos: 'getDatos',
+  getPrediccion : 'getPrediccion',
+  getVariables : 'getVariables',
+  getWordCount : 'getWordCount',
+  postFiltroTuit: 'postFiltroTuit',
   postDataCountry : '/postDataCountry'
 };
 
