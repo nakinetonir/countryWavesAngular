@@ -13,11 +13,13 @@ export class MainComponent implements OnInit {
   countrySelected: boolean = false;
   datosTotal
   fechaTotal
+  totalDia
   datosMes
   fechaMes
   country
   datosPorMes
   meseString
+  fechaDia
   movil: number = 320;
   table: number = 740;
   desktop: number = 980
@@ -50,6 +52,10 @@ export class MainComponent implements OnInit {
           this.fechaMes = JSON.parse(x["totalMeses"]).fecha
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
           this.totalCasos = JSON.parse(x["totalCasos"]);
+          this.totalDia = {
+            totalDia : JSON.parse(x["totalDia"]),
+            fechaDia:x["fechaDia"]
+          }
           this.country = event
           let disntintos = this.disntintos(this.meseString)
           console.log(disntintos)
@@ -95,7 +101,7 @@ export class MainComponent implements OnInit {
         j = j + 1;
         mesesFor[j]=meseString[index]
       }
-     
+
       mesAnterior=meseString[index]
       let arrayStgring: string[] = [];
       arrayStgring.push(fecha[index])
@@ -105,7 +111,7 @@ export class MainComponent implements OnInit {
       {
         listadoDatosTotal[j] = listadoDatos
       }
-      
+
     }
 
     this.datosPorMes = listadoDatosTotal
@@ -150,8 +156,8 @@ export class MainComponent implements OnInit {
         }
     }
      return distinct
-          
+
   }
- 
+
 
 }

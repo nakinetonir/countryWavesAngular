@@ -27,6 +27,7 @@ export class GraficasComponent implements OnInit {
   mostrarMes : boolean = false;
   mostrarBotoMes : boolean = false;
   totalDeCasos
+  totalPorDia
   @Input() set datos (datos) {
     if(datos) {
       this.chartOptions.series[0].data = datos;
@@ -37,6 +38,17 @@ export class GraficasComponent implements OnInit {
   }
   get datos() {
     return this.datos;
+  }
+
+  @Input() set totalDia(totalDia) {
+    if(totalDia)
+    {
+        this.totalPorDia = totalDia
+    }
+  }
+
+  get totalDia() {
+    return this.totalDia
   }
 
   @Input() set datosPorMes (datosPorMes) {
@@ -57,7 +69,7 @@ export class GraficasComponent implements OnInit {
   get datosPorMes() {
     return this.datosPorMes;
   }
-  
+
   @Input() set close (close) {
     if(close) {
       this.mostrarAno = true;
@@ -77,7 +89,7 @@ export class GraficasComponent implements OnInit {
         this.options[op].title.text = this.mesesArray[op];
       }
      }
-     
+
     }
   }
   get mesesFor() {
@@ -206,7 +218,7 @@ export class GraficasComponent implements OnInit {
       {
           this.mostrarMes = true;
           this.mostrarAno = false;
-      } 
+      }
       else
       {
           this.mostrarAno = true;

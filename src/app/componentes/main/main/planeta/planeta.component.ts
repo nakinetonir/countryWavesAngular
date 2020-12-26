@@ -38,7 +38,7 @@ export class PlanetaComponent implements OnInit {
         alignTo: "spacingBox"
       }
     },
-    
+
     legend: {
       enabled: true
     },
@@ -288,7 +288,7 @@ export class PlanetaComponent implements OnInit {
       {
         this.country.next('US')
       }
-      if(event.point && event.point.name)
+      else if(event.point && event.point.name)
       this.country.next(event.point.name)
   }
 }

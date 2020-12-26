@@ -2,6 +2,6 @@
 
 <p-sidebar [style]="{'width' :  tamano }" [(visible)]="countrySelected" [baseZIndex]="10000" (onHide)="onHide()" id="sidebar">
     <h1 style="font-weight:normal">{{country}}</h1>
-    <app-graficas [datos]="datos" [datosPorMes]="datosPorMes" [close]="close" [mesesFor]="meses" [totalCasos]="totalCasos"></app-graficas>
+    <app-graficas [datos]="datos" [datosPorMes]="datosPorMes" [close]="close" [mesesFor]="meses" [totalCasos]="totalCasos" [totalDia]="totalDia"></app-graficas>
 
 </p-sidebar>
