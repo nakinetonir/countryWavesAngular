@@ -1,7 +1,7 @@
 <div class="button__position">
     <button type="button" class="btn btn-outline-primary" (click)="mostrar('ano')">Per year</button>
     <button  *ngIf="mostrarBotoMes" type="button" class="btn btn-outline-primary space--button" (click)="mostrar('mes')">Per month</button>
-    <h3 class="h3_day">{{totalPorDia.fechaDia}} casos >> {{totalPorDia.totalDia}} </h3>
+    <h3 class="h3_day"><i class="pi pi-calendar"></i><span class="left">{{fechaDiaDato | date:' dd MMM yyyy'}}</span><i class="pi pi-chart-bar left"></i><span class="right">{{totalDiaDato}}</span></h3>
 </div>
 <br/>
 

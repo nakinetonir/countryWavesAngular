@@ -28,6 +28,8 @@ export class GraficasComponent implements OnInit {
   mostrarBotoMes : boolean = false;
   totalDeCasos
   totalPorDia
+  fechaDiaDato
+  totalDiaDato
   @Input() set datos (datos) {
     if(datos) {
       this.chartOptions.series[0].data = datos;
@@ -40,10 +42,12 @@ export class GraficasComponent implements OnInit {
     return this.datos;
   }
 
-  @Input() set totalDia(totalDia) {
-    if(totalDia)
+  @Input() set totalDia(total) {
+    if(total)
     {
-        this.totalPorDia = totalDia
+        this.totalPorDia = total
+        this.totalDiaDato = this.totalPorDia.totalDia
+        this.fechaDiaDato = this.totalPorDia.fechaDia
     }
   }
 
