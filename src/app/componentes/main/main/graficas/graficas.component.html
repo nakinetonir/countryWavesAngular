@@ -15,7 +15,7 @@
     Per month
   </button>
    <form class="form-inline">
-  <select class="custom-select my-1 mr-sm-2 blue--border" id="inlineFormCustomSelectPref" [(ngModel)]="selectYears" (change)="putData()" name="selectYears">
+  <select class="custom-select  blue--border col-lg-2 col-sm-4 col-3" id="inlineFormCustomSelectPref" [(ngModel)]="selectYears" (change)="putData()" name="selectYears">
     <option value="0" disabled>Years</option>
     <option *ngFor="let year of yearsInput">
       {{year}}
