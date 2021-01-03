@@ -28,6 +28,8 @@ export class MainComponent implements OnInit {
   tamano = "35%"
   totalCasos;
   meses : string[]
+  yearsTotal
+  years
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     console.log(event.target.innerWidth);
@@ -48,10 +50,12 @@ export class MainComponent implements OnInit {
         x => {
           this.datosTotal = JSON.parse(x["totalDatos"]).fechaTotal
           this.fechaTotal = JSON.parse(x["totalDatos"]).datosTotal
+          this.yearsTotal = JSON.parse(x["totalDatos"]).yearsTotal
           this.datosMes = JSON.parse(x["totalMeses"]).datos
           this.fechaMes = JSON.parse(x["totalMeses"]).fecha
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
           this.totalCasos = JSON.parse(x["totalCasos"]);
+          this.years = JSON.parse(x["years"])
           this.totalDia = {
             totalDia : JSON.parse(x["totalDia"]),
             fechaDia:x["fechaDia"]
@@ -60,20 +64,21 @@ export class MainComponent implements OnInit {
           let disntintos = this.disntintos(this.meseString)
           console.log(disntintos)
           this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString)
-          this.datosProcess(this.datosTotal, this.fechaTotal)
+          this.datosProcess(this.datosTotal, this.fechaTotal,this.yearsTotal)
 
         }
       )
     }
 
   }
-  datosProcess(datosTotal, fechaTotal) {
+  datosProcess(datosTotal, fechaTotal,yearsTotal) {
     let listadoDatos = []
     // tslint:disable-next-line: forin
     for (let i in datosTotal) {
       let arrayStgring: string[] = [];
       arrayStgring.push(datosTotal[i])
       arrayStgring.push(fechaTotal[i])
+      arrayStgring.push(yearsTotal[i])
       listadoDatos.push(arrayStgring);
     }
     this.datos = listadoDatos

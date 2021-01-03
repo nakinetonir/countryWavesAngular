@@ -1,22 +1,56 @@
 <div class="button__position">
-    <button type="button" class="btn btn-outline-primary" (click)="mostrar('ano')">Per year</button>
-    <button  *ngIf="mostrarBotoMes" type="button" class="btn btn-outline-primary space--button" (click)="mostrar('mes')">Per month</button>
-    <h3 class="h3_day"><i class="pi pi-calendar"></i><span class="left">{{fechaDiaDato | date:' dd MMM yyyy'}}</span><i class="pi pi-chart-bar left"></i><span class="right">{{totalDiaDato}}</span></h3>
+  <button
+    type="button"
+    class="btn btn-outline-primary"
+    (click)="mostrar('ano')"
+  >
+    Per year
+  </button>
+  <button
+    *ngIf="mostrarBotoMes"
+    type="button"
+    class="btn btn-outline-primary space--button"
+    (click)="mostrar('mes')"
+  >
+    Per month
+  </button>
+   <form class="form-inline">
+  <select class="custom-select my-1 mr-sm-2 blue--border" id="inlineFormCustomSelectPref" [(ngModel)]="selectYears" (change)="putData()" name="selectYears">
+    <option value="0" disabled>Years</option>
+    <option *ngFor="let year of yearsInput">
+      {{year}}
+    </option>
+  </select>
+
+</form>
+  <h3 class="h3_day">
+    <i class="pi pi-calendar"></i>
+    <span class="left">{{ fechaDiaDato | date: " dd MMM yyyy" }} </span
+    ><i class="pi pi-chart-bar left"></i>
+    <span class="right">{{ totalDiaDato }}</span>
+
+  </h3>
 </div>
-<br/>
+<br />
 
 <div *ngIf="mostrarAno">
-    <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" [(update)]="datosOk"
-        style="width: 80%; height: 80%; display: block;">
-    </highcharts-chart>
+  <highcharts-chart
+    [Highcharts]="highcharts"
+    [options]="chartOptions"
+    [(update)]="datosOk"
+    style="width: 80%; height: 80%; display: block"
+  >
+  </highcharts-chart>
 </div>
 <div *ngIf="mostrarMes" class="graficas__body">
-    <div *ngFor="let datos of meses; let i = index ">
-        <highcharts-chart [Highcharts]="highcharts" [options]="options[i]"
-            style="width: 80%; height: 80%; display: block;">
-        </highcharts-chart>
-        <br />
-        <br />
-    </div>
-
+  <div *ngFor="let datos of meses; let i = index">
+    <highcharts-chart
+      [Highcharts]="highcharts"
+      [options]="options[i]"
+      style="width: 80%; height: 80%; display: block"
+    >
+    </highcharts-chart>
+    <br />
+    <br />
+  </div>
 </div>

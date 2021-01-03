@@ -30,9 +30,13 @@ export class GraficasComponent implements OnInit {
   totalPorDia
   fechaDiaDato
   totalDiaDato
+  selectYears = "2021"
+  yearsInput = []
+  datosInput
   @Input() set datos (datos) {
     if(datos) {
-      this.chartOptions.series[0].data = datos;
+      this.datosInput = datos
+      this.putData()
       this.mostrarAno = true;
       this.mostrarMes = false;
       this.datosOk = true;
@@ -78,6 +82,15 @@ export class GraficasComponent implements OnInit {
     if(close) {
       this.mostrarAno = true;
       this.mostrarMes = false;
+    }
+  }
+  get years() {
+    return this.yearsInput;
+  }
+
+  @Input() set years (years) {
+    if(years) {
+      this.yearsInput = years
     }
   }
   get close() {
@@ -228,5 +241,17 @@ export class GraficasComponent implements OnInit {
           this.mostrarAno = true;
           this.mostrarMes = false;
       }
+  }
+  putData()
+  {
+    let datos = this.datosInput.filter(x=> x[2]==this.selectYears)
+    datos = datos.map((x)=> {
+          let r = []
+          r.push(x[0])
+          r.push(x[1])
+          return r
+    })
+    this.chartOptions.series[0].data =datos;
+    this.datosOk = true;
   }
 }

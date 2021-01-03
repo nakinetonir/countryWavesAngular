@@ -19,7 +19,7 @@ import { GraficasModule} from './graficas/graficas.module'
     SidebarModule,
     GraficasModule
 
-  
+
   ],
   providers : [MainService]
 })
