@@ -135,15 +135,15 @@ sizeScreen(size, sidebar) {
 
   }
   else if (size <= this.desktop) {
-    this.tamano = "35%";
+    this.tamano = "45%";
 
   }
   else if (size <= this.wide) {
-    this.tamano = "35%";
+    this.tamano = "45%";
 
   }
   else {
-    this.tamano = "40%";
+    this.tamano = "50%";
   }
 
 

@@ -1,5 +1,5 @@
 import { MesesInterface } from './../interface/meses-interface';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -21,6 +21,7 @@ noData(Highcharts);
   styleUrls: ['./graficas.component.scss']
 })
 export class GraficasComponent implements OnInit {
+  @Output() onDeSelectAll: EventEmitter<any> = new EventEmitter();
   dropdownSettings: IDropdownSettings = {}
   datosOk: boolean = false
   datosMesOk: boolean = false
@@ -180,8 +181,7 @@ export class GraficasComponent implements OnInit {
       textField: 'item_text',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
+      itemsShowLimit: 0
     };
 
   }
@@ -249,6 +249,7 @@ export class GraficasComponent implements OnInit {
   }
   putData() {
     this.filtros = []
+    this.onDeSelectAll.next(null)
     let datos = this.datosInput.filter(x => x[2] == this.selectYears)
     if (this.datosPorMesInput) {
       let mesesFilterYear = this.datosPorMesInput.filter(x => x.year == this.selectYears)
@@ -314,5 +315,9 @@ export class GraficasComponent implements OnInit {
     optionCount.title.text = month
     this.options[count] = optionCount
     this.datosMesOk = true;
+  }
+  onDeSelectAllFunct($event)
+  {
+
   }
 }

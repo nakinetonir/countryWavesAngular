@@ -5,6 +5,7 @@ import { GraficasComponent } from './graficas.component';
 import { FormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
+
 @NgModule({
   declarations: [GraficasComponent],
   imports: [

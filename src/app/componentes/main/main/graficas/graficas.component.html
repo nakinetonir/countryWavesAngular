@@ -1,6 +1,6 @@
 <div class="button__position">
   <div class="row">
-    <div class="col-3">
+    <div class="col-8 col-sm-8 col-md-3 col-lg-3">
       <button
         type="button"
         class="btn btn-outline-primary btn-block"
@@ -9,7 +9,7 @@
         Per year
       </button>
     </div>
-    <div class="col-3">
+    <div class="col-8 col-sm-8 col-md-3 col-lg-3">
       <select
         class="form-control blue--border"
         [(ngModel)]="selectYears"
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="row separed">
-    <div class="col-3">
+    <div class="col-8 col-sm-8 col-md-3 col-lg-3">
       <button
         type="button"
         class="btn btn-outline-primary btn-block"
@@ -32,7 +32,7 @@
         Per month
       </button>
     </div>
-    <div class="col-3" *ngIf="mesesOk">
+    <div class="col-8 col-sm-8 col-md-3 col-lg-3" *ngIf="mesesOk">
       <ng-multiselect-dropdown
         [placeholder]="'Month'"
         [data]="mesesSelect"
@@ -40,6 +40,7 @@
         [settings]="dropdownSettings"
         (onSelect)="getMonth($event,true)"
         (onDeSelect)="getMonth($event,false)"
+        (onDeSelectAll)="onDeSelectAllFunct($event)"
       >
       </ng-multiselect-dropdown>
      <!-- <select
