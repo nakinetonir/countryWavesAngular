@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MainService } from './main.service'
-
+import { MesesInterface } from './interface/meses-interface'
 
 @Component({
   selector: 'app-main',
@@ -8,7 +8,6 @@ import { MainService } from './main.service'
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-
   datos
   countrySelected: boolean = false;
   datosTotal
@@ -30,6 +29,8 @@ export class MainComponent implements OnInit {
   meses : string[]
   yearsTotal
   years
+  yearsMes
+  mesesInterface : MesesInterface[] = []
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     console.log(event.target.innerWidth);
@@ -51,8 +52,9 @@ export class MainComponent implements OnInit {
           this.datosTotal = JSON.parse(x["totalDatos"]).fechaTotal
           this.fechaTotal = JSON.parse(x["totalDatos"]).datosTotal
           this.yearsTotal = JSON.parse(x["totalDatos"]).yearsTotal
-          this.datosMes = JSON.parse(x["totalMeses"]).datos
-          this.fechaMes = JSON.parse(x["totalMeses"]).fecha
+          this.datosMes = JSON.parse(x["totalMeses"]).numberDay
+          this.fechaMes = JSON.parse(x["totalMeses"]).Fecha
+          this.yearsMes = JSON.parse(x["totalMeses"]).year
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
           this.totalCasos = JSON.parse(x["totalCasos"]);
           this.years = JSON.parse(x["years"])
@@ -61,9 +63,8 @@ export class MainComponent implements OnInit {
             fechaDia:x["fechaDia"]
           }
           this.country = event
-          let disntintos = this.disntintos(this.meseString)
-          console.log(disntintos)
-          this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString)
+          this.datosProcessMes(JSON.parse(x["totalMeses"]))
+          //this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString , this.yearsMes)
           this.datosProcess(this.datosTotal, this.fechaTotal,this.yearsTotal)
 
         }
@@ -86,70 +87,27 @@ export class MainComponent implements OnInit {
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
-  datosProcessMes(datos, fecha, meseString) {
-    let listadoDatosTotal: String[][] = [];
-    let listadoDatos = []
-    let j = 0
-    let mesAnterior
-    let tamano = Object.keys(datos).length
-    let mesesFor: string[] = []
-    for (let i in datos) {
-      let index = parseInt(i)
-      if(index==0)
-      {
-        mesAnterior=meseString[index]
-        mesesFor[j]=meseString[index]
-      }
-      if (mesAnterior!=meseString[index]) {
-        listadoDatosTotal[j] = listadoDatos
-        listadoDatos = []
-        j = j + 1;
-        mesesFor[j]=meseString[index]
-      }
-
-      mesAnterior=meseString[index]
-      let arrayStgring: string[] = [];
-      arrayStgring.push(fecha[index])
-      arrayStgring.push(datos[index])
-      listadoDatos.push(arrayStgring);
-      if(index+1 == tamano)
-      {
-        listadoDatosTotal[j] = listadoDatos
-      }
+  datosProcessMes(datos) {
+    let meses : MesesInterface[] = []
+    for (let i in datos.Fecha) {
+        let d = datos.Fecha[i]
+        let diaInterface : MesesInterface =
+        {
+          Fecha : datos.Fecha[i],
+          variable : datos.variable[i],
+          year : datos.year[i],
+          numberDay : datos.numberDay[i],
+          MesDate : datos.MesDate[i]
+        }
+        meses.push(diaInterface)
 
     }
 
-    this.datosPorMes = listadoDatosTotal
-    this.meses = mesesFor;
+    this.datosPorMes = meses;
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
-  onHide() {
-    this.close = true;
-  }
-  sizeScreen(size, sidebar) {
-    if (size <= this.movil) {
-      this.tamano = "100%";
 
-    }
-    else if (size <= this.table) {
-      this.tamano = "100%";
-
-    }
-    else if (size <= this.desktop) {
-      this.tamano = "35%";
-
-    }
-    else if (size <= this.wide) {
-      this.tamano = "35%";
-
-    }
-    else {
-      this.tamano = "40%";
-    }
-
-
-  }
   disntintos(datos)
   {
     var distinct = []
@@ -164,5 +122,30 @@ export class MainComponent implements OnInit {
 
   }
 
+onHide() {
+  this.close = true;
+}
+sizeScreen(size, sidebar) {
+  if (size <= this.movil) {
+    this.tamano = "100%";
 
+  }
+  else if (size <= this.table) {
+    this.tamano = "100%";
+
+  }
+  else if (size <= this.desktop) {
+    this.tamano = "35%";
+
+  }
+  else if (size <= this.wide) {
+    this.tamano = "35%";
+
+  }
+  else {
+    this.tamano = "40%";
+  }
+
+
+}
 }

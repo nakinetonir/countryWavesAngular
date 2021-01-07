@@ -23,46 +23,46 @@ interface IGrafica {
 })
 export class GraficaComponent implements OnInit, AfterViewInit {
   graficaConstante = 'area_parcela';
-  graficaSelect : IGrafica;
+  graficaSelect: IGrafica;
 
- graficas: { [id: string]: IGrafica; } = {
-    area_parcela: { label: 'Area parcela', simbolo : 'm' },
-    n_chimeneas: { label: 'Nº Chimeneas', simbolo : 'nº' },
-    n_cocinas: { label: 'Nº Cocinas', simbolo : 'nº' },
-    n_dormitorios_sobre_suelo: { label: 'Nº Dormitorios', simbolo : 'nº' },
-    area_habitable_sobre_suelo: { label: 'Area habitable', simbolo : 'm2' },
-    calidad_general: { label: 'Calidad', simbolo : ':)' },
- };
+  graficas: { [id: string]: IGrafica; } = {
+    area_parcela: { label: 'Area parcela', simbolo: 'm' },
+    n_chimeneas: { label: 'Nº Chimeneas', simbolo: 'nº' },
+    n_cocinas: { label: 'Nº Cocinas', simbolo: 'nº' },
+    n_dormitorios_sobre_suelo: { label: 'Nº Dormitorios', simbolo: 'nº' },
+    area_habitable_sobre_suelo: { label: 'Area habitable', simbolo: 'm2' },
+    calidad_general: { label: 'Calidad', simbolo: ':)' },
+  };
   highcharts = Highcharts;
   valorY;
-  datosOk : boolean = false
+  datosOk: boolean = false
   //Carga la configuración del plot
   chartOptions = {
     chart: {
       type: 'scatter',
       zoomType: 'xy'
-  },
-  title: {
+    },
+    title: {
       text: 'Precios por '
-  },
-  subtitle: {
+    },
+    subtitle: {
       text: 'Iñaki  Moneo Arau'
-  },
-  xAxis: {
+    },
+    xAxis: {
       title: {
-          enabled: true,
-          text: 'Precio'
+        enabled: true,
+        text: 'Precio'
       },
       startOnTick: true,
       endOnTick: true,
       showLastLabel: true
-  },
-  yAxis: {
+    },
+    yAxis: {
       title: {
-          text: ''
+        text: ''
       }
-  },
-  legend: {
+    },
+    legend: {
       layout: 'vertical',
       align: 'left',
       verticalAlign: 'top',
@@ -71,50 +71,49 @@ export class GraficaComponent implements OnInit, AfterViewInit {
       floating: true,
       backgroundColor: Highcharts.defaultOptions.chart.backgroundColor,
       borderWidth: 1
-  },
-  plotOptions: {
+    },
+    plotOptions: {
       scatter: {
-          marker: {
-              radius: 5,
-              states: {
-                  hover: {
-                      enabled: true,
-                      lineColor: 'rgb(100,100,100)'
-                  }
-              }
-          },
+        marker: {
+          radius: 5,
           states: {
-              hover: {
-                  marker: {
-                      enabled: false
-                  }
-              }
-          },
-          tooltip: {
-              headerFormat: '<b>{series.name}</b><br>',
-              pointFormat: '{point.x} €, {point.y} '
+            hover: {
+              enabled: true,
+              lineColor: 'rgb(100,100,100)'
+            }
           }
+        },
+        states: {
+          hover: {
+            marker: {
+              enabled: false
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br>',
+          pointFormat: '{point.x} €, {point.y} '
+        }
       }
-  },
-  series: [{
+    },
+    series: [{
       name: 'Precio',
       color: '#008B8B',
       data: []
 
-  }]
+    }]
   };
-  constructor( private store: Store<any>) {
+  constructor(private store: Store<any>) {
     this.graficaSelect = this.graficas[this.graficaConstante];
-    this.store.subscribe( state => {
-        if(state.grafica.datos!=null)
-        {
-          let datosXArray = state.grafica.datos[1] as Array<any>;
-          let datosYArray = state.grafica.datos[0] as Array<any>;
-          this.updateData(datosXArray, datosYArray);
-          //Math.max.apply(Math, array.map(function(o) { return o.y; }))
-        }
+    this.store.subscribe(state => {
+      if (state.grafica.datos != null) {
+        let datosXArray = state.grafica.datos[1] as Array<any>;
+        let datosYArray = state.grafica.datos[0] as Array<any>;
+        this.updateData(datosXArray, datosYArray);
+        //Math.max.apply(Math, array.map(function(o) { return o.y; }))
+      }
 
-        let varLabel
+      let varLabel
 
     })
 
@@ -125,39 +124,34 @@ export class GraficaComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     let grafica = this.graficaConstante
     this.cargarLabels(grafica);
-    this.store.dispatch( getData({grafica}) );
+    this.store.dispatch(getData({ grafica }));
   }
 
-  ngAfterViewInit()
-  {
+  ngAfterViewInit() {
     sessionStorage.setItem("formularioCargado", null)
   }
   //Carga la gráfica en función al filtro.
-    getGrafica(grafica)
-    {
-      this.cargarLabels(grafica);
-      this.store.dispatch( getData({grafica}) );
+  getGrafica(grafica) {
+    this.cargarLabels(grafica);
+    this.store.dispatch(getData({ grafica }));
 
-    }
+  }
 
 
- cargarLabels(id)
- {
-   this.graficaSelect = this.graficas[id]
-   if(this.graficaSelect!=undefined)
-   {
+  cargarLabels(id) {
+    this.graficaSelect = this.graficas[id]
+    if (this.graficaSelect != undefined) {
       this.chartOptions.title.text = 'Precios por ' + this.graficaSelect.label.toLowerCase();
       this.chartOptions.yAxis.title.text = this.graficaSelect.label;
-      this.chartOptions.plotOptions.scatter.tooltip.pointFormat ='{point.x} €, {point.y} ' + this.graficaSelect.simbolo;
-   }
+      this.chartOptions.plotOptions.scatter.tooltip.pointFormat = '{point.x} €, {point.y} ' + this.graficaSelect.simbolo;
+    }
 
- }
- //Actuliza los datos mostrado en la gráfica
-  updateData(x,y) {
-    if(x.length!=undefined)
-    {
+  }
+  //Actuliza los datos mostrado en la gráfica
+  updateData(x, y) {
+    if (x.length != undefined) {
       const zip = (x, y) => x.map((k, i) => [k, y[i]]);
-      this.chartOptions.series[0].data = zip(x,y);
+      this.chartOptions.series[0].data = zip(x, y);
       this.datosOk = true;
     }
 
