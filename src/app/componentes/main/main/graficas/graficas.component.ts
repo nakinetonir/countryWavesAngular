@@ -1,7 +1,8 @@
 import { MesesInterface } from './../interface/meses-interface';
-import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ListadoMounth } from '../enumerables/mounth'
 
 
 declare var require: any;
@@ -21,7 +22,7 @@ noData(Highcharts);
   styleUrls: ['./graficas.component.scss']
 })
 export class GraficasComponent implements OnInit {
-  @Output() onDeSelectAll: EventEmitter<any> = new EventEmitter();
+  @Output() onDropdownChange: EventEmitter<any> = new EventEmitter();
   dropdownSettings: IDropdownSettings = {}
   datosOk: boolean = false
   datosMesOk: boolean = false
@@ -43,7 +44,9 @@ export class GraficasComponent implements OnInit {
   mesesSelect
   datosPorMesInput
   filtros = []
+  enableCheckAll: boolean = true
   mesesOk: boolean = false
+  mesesSort
   @Input() set datos(datos) {
     if (datos) {
       this.datosInput = datos
@@ -76,6 +79,7 @@ export class GraficasComponent implements OnInit {
       this.mesesSelect = Array.from(new Set(mesesFilterYear.map(x => {
         return x.MesDate;
       })))
+      this.sortMounth()
       if (this.mesesSelect)
         this.mesesOk = true
 
@@ -175,6 +179,7 @@ export class GraficasComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.mesFilter = []
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'item_id',
@@ -248,15 +253,17 @@ export class GraficasComponent implements OnInit {
     }
   }
   putData() {
+    this.mesFilter = []
     this.filtros = []
-    this.onDeSelectAll.next(null)
     let datos = this.datosInput.filter(x => x[2] == this.selectYears)
     if (this.datosPorMesInput) {
       let mesesFilterYear = this.datosPorMesInput.filter(x => x.year == this.selectYears)
       this.mesesSelect = Array.from(new Set(mesesFilterYear.map(x => {
         return x.MesDate;
       })))
+
     }
+
 
     datos = datos.map((x) => {
       let r = []
@@ -264,6 +271,7 @@ export class GraficasComponent implements OnInit {
       r.push(x[1])
       return r
     })
+    this.sortMounth()
     this.chartOptions.series[0].data = datos;
     this.datosOk = true;
   }
@@ -287,11 +295,10 @@ export class GraficasComponent implements OnInit {
         this.filtros.splice(index, 1);
       }
     }
-    let datos: MesesInterface[] = [];
     let count = 0
     if (this.filtros) {
-      for (let filtre of this.filtros) {
-        this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate == filtre && x.year == this.selectYears), count,filtre)
+      for (let filtro of this.filtros) {
+        this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate == filtro && x.year == this.selectYears), count, filtro)
         count = count + 1;
       }
     }
@@ -299,7 +306,7 @@ export class GraficasComponent implements OnInit {
 
 
   }
-  filterMonth(datos, count , month) {
+  filterMonth(datos, count, month) {
 
     datos = datos.sort((a, b) => {
       return <any>new Date(a.Fecha) - <any>new Date(b.Fecha);
@@ -316,8 +323,40 @@ export class GraficasComponent implements OnInit {
     this.options[count] = optionCount
     this.datosMesOk = true;
   }
-  onDeSelectAllFunct($event)
-  {
+  onDeSelectAllFunct($event) {
+    this.filtros = []
+  }
+
+  onSelectAllFunct($event) {
+
+    let count = 0
+    for (let filtro of this.mesesSort) {
+      this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate == filtro && x.year == this.selectYears), count, filtro)
+      var index = this.filtros.indexOf(filtro);
+      if (index == -1) {
+        this.filtros.push(filtro)
+      }
+      count = count + 1;
+    }
+
+
+  }
+  sortMounth() {
+    if (this.mesesSelect) {
+      let mesesSort = Array.apply(null, Array(this.mesesSelect.length)).map(function () { })
+      for (let mounth of this.mesesSelect) {
+        var index = ListadoMounth.indexOf(mounth);
+        mesesSort[index] = mounth
+      }
+      let indices = mesesSort.reduce(function (r, v, i) {
+        return r.concat(v === undefined ? i : []);
+      }, []);
+      mesesSort = mesesSort.filter(function (value, index) {
+        return indices.indexOf(index) == -1;
+      })
+
+      this.mesesSort = mesesSort
+    }
 
   }
 }

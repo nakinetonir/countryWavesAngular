@@ -35,12 +35,14 @@
     <div class="col-8 col-sm-8 col-md-3 col-lg-3" *ngIf="mesesOk">
       <ng-multiselect-dropdown
         [placeholder]="'Month'"
-        [data]="mesesSelect"
+        [data]="mesesSort"
         [(ngModel)]="mesFilter"
+
         [settings]="dropdownSettings"
         (onSelect)="getMonth($event,true)"
         (onDeSelect)="getMonth($event,false)"
         (onDeSelectAll)="onDeSelectAllFunct($event)"
+        (onSelectAll)="onSelectAllFunct($event)"
       >
       </ng-multiselect-dropdown>
      <!-- <select
@@ -67,7 +69,8 @@
   </h3>
 </div>
 <br />
-
+<br />
+<br />
 <div *ngIf="mostrarAno">
   <highcharts-chart
     [Highcharts]="highcharts"
