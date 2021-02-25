@@ -26,11 +26,11 @@ export class PlanetaComponent implements OnInit {
       map: worldMap as any
     },
     title: {
-      text: "Casos de covid en el mundo"
+      text: "Covid cases in the world"
     },
     subtitle: {
       text:
-        'Click en el páis'
+        'Click on the country'
     },
     mapNavigation: {
       enabled: true,
