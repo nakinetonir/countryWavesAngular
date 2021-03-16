@@ -68,8 +68,8 @@
     <span class="right">{{ totalDiaDato }}</span>
   </h3>
 </div>
-<div id="top">
-<div *ngIf="mostrarAno">
+
+<div *ngIf="mostrarAno" id="top">
   <highcharts-chart
     [Highcharts]="highcharts"
     [options]="chartOptions"
@@ -78,7 +78,7 @@
   >
   </highcharts-chart>
 </div>
-<div *ngIf="mostrarMes" class="graficas__body">
+<div *ngIf="mostrarMes" class="graficas__body" id="top">
   <div *ngFor="let datos of filtros; let i = index">
     <highcharts-chart
       [Highcharts]="highcharts"
@@ -86,7 +86,7 @@
       style="width: 80%; height: 80%; display: block"
     >
     </highcharts-chart>
-
+    <br />
+    <br />
   </div>
-</div>
 </div>
