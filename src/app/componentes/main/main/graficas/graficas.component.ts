@@ -198,7 +198,9 @@ export class GraficasComponent implements OnInit {
     };
     this._ms.getSizeScreen().subscribe(
       x => {
-        this.sizeScreen(x)
+        let element = document.getElementById("top")
+        if(element)
+        this.sizeScreen(x,element)
 
       }
     )
@@ -374,25 +376,25 @@ export class GraficasComponent implements OnInit {
 
   }
 
-  sizeScreen(size) {
+  sizeScreen(size,element) {
     if (size <= this.movil) {
-      this.tamano = "80%";
+      element.classList.remove("positionCenter")
 
     }
     else if (size <= this.table) {
-      this.tamano = "80%";
 
+      element.classList.remove("positionCenter")
     }
     else if (size <= this.desktop) {
-      this.tamano = "80%";
+      element.classList.add("positionCenter")
 
     }
     else if (size <= this.wide) {
-      this.tamano = "100%";
+      element.classList.add("positionCenter")
 
     }
     else {
-      this.tamano = "100%";
+      element.classList.add("positionCenter")
     }
 
 
