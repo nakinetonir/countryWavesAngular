@@ -22,6 +22,7 @@ const httpOptions = {
 export class MainService {
   baseUrl = environment.urlServer;
   modal = new BehaviorSubject(false);
+  sizeScreen = new BehaviorSubject(false);
   constructor(private http: HttpClient) { }
 
   postData() {
@@ -52,10 +53,18 @@ export class MainService {
   }*/
   getModal()
   {
-      return this.modal;
+      return this.modal.asObservable();
   }
   setModal(val)
   {
       this.modal.next(val)
+  }
+  getSizeScreen()
+  {
+      return this.sizeScreen.asObservable();
+  }
+  setSizeScreen(val)
+  {
+      this.sizeScreen.next(val)
   }
 }

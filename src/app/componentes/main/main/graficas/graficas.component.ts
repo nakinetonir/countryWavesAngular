@@ -1,8 +1,9 @@
 import { MesesInterface } from './../interface/meses-interface';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListadoMounth } from '../enumerables/mounth'
+import { MainService } from '../main.service'
 
 
 declare var require: any;
@@ -22,6 +23,7 @@ noData(Highcharts);
   styleUrls: ['./graficas.component.scss']
 })
 export class GraficasComponent implements OnInit {
+
   @Output() onDropdownChange: EventEmitter<any> = new EventEmitter();
   dropdownSettings: IDropdownSettings = {}
   datosOk: boolean = false
@@ -47,6 +49,11 @@ export class GraficasComponent implements OnInit {
   enableCheckAll: boolean = true
   mesesOk: boolean = false
   mesesSort
+  movil: number = 320;
+  table: number = 740;
+  desktop: number = 980
+  wide: number = 1300
+  tamano = "100%"
   @Input() set datos(datos) {
     if (datos) {
       this.datosInput = datos
@@ -176,9 +183,10 @@ export class GraficasComponent implements OnInit {
       }
     }]
   };
-  constructor() { }
+  constructor(private _ms: MainService) { }
 
   ngOnInit(): void {
+
     this.mesFilter = []
     this.dropdownSettings = {
       singleSelection: false,
@@ -188,6 +196,12 @@ export class GraficasComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 0
     };
+    this._ms.getSizeScreen().subscribe(
+      x => {
+        this.sizeScreen(x)
+
+      }
+    )
 
   }
   getOptions() {
@@ -357,6 +371,30 @@ export class GraficasComponent implements OnInit {
 
       this.mesesSort = mesesSort
     }
+
+  }
+
+  sizeScreen(size) {
+    if (size <= this.movil) {
+      this.tamano = "80%";
+
+    }
+    else if (size <= this.table) {
+      this.tamano = "80%";
+
+    }
+    else if (size <= this.desktop) {
+      this.tamano = "80%";
+
+    }
+    else if (size <= this.wide) {
+      this.tamano = "100%";
+
+    }
+    else {
+      this.tamano = "100%";
+    }
+
 
   }
 }

@@ -36,6 +36,7 @@ export class MainComponent implements OnInit {
     console.log(event.target.innerWidth);
     let sidebar = document.getElementById('sidebar')
     this.sizeScreen(event.target.innerWidth, sidebar)
+    this._ms.setSizeScreen(window.innerWidth)
 
   }
   constructor(private _ms: MainService) { }
@@ -43,6 +44,7 @@ export class MainComponent implements OnInit {
   ngOnInit(): void {
       let sidebar = document.getElementById('sidebar')
       this.sizeScreen(window.innerWidth,sidebar)
+      this._ms.setSizeScreen(window.innerWidth)
   }
 
   selectCountry(event) {

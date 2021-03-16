@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener} from '@angular/core';
 
 
 import * as Highcharts from "highcharts/highmaps";
@@ -16,6 +16,8 @@ let worldMap = require('@highcharts/map-collection/custom/world.geo.json');
   styleUrls: ['./planeta.component.sass']
 })
 export class PlanetaComponent implements OnInit {
+
+
   @Output() country = new EventEmitter(null)
   Highcharts: typeof Highcharts = Highcharts;
   chartConstructor = "mapChart";
@@ -281,6 +283,7 @@ export class PlanetaComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
   selectCountry(event)
   {
@@ -291,4 +294,9 @@ export class PlanetaComponent implements OnInit {
       else if(event.point && event.point.name)
       this.country.next(event.point.name)
   }
-}
+
+
+
+
+  }
+
