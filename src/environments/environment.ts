@@ -10,7 +10,8 @@ export const environment = {
   getVariables : 'getVariables',
   getWordCount : 'getWordCount',
   postFiltroTuit: 'postFiltroTuit',
-  postDataCountry : '/postDataCountry'
+  postDataCountry : '/postDataCountry',
+  postPredictCases : 'postPredictCases'
 };
 
 /*

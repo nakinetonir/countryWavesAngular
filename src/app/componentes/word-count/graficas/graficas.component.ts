@@ -21,7 +21,8 @@ export class GraficasComponent implements OnInit {
   datosOk: boolean = false
   datosString
   conf
-  @Input() set datos (datos) {
+  @Input()
+  set datos(datos) {
     if(datos && this.configuracion) {
       this.datosString = datos;
       this.configuracion.series[0].data = this.datosString;

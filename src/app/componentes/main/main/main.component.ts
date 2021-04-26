@@ -51,8 +51,8 @@ export class MainComponent implements OnInit {
     if (event) {
       this._ms.postDataCountry(event).subscribe(
         x => {
-          this.datosTotal = JSON.parse(x["totalDatos"]).fechaTotal
-          this.fechaTotal = JSON.parse(x["totalDatos"]).datosTotal
+          this.datosTotal = JSON.parse(x["totalDatos"]).datosTotal
+          this.fechaTotal = JSON.parse(x["totalDatos"]).fechaTotal
           this.yearsTotal = JSON.parse(x["totalDatos"]).yearsTotal
           this.datosMes = JSON.parse(x["totalMeses"]).numberDay
           this.fechaMes = JSON.parse(x["totalMeses"]).Fecha
@@ -79,8 +79,8 @@ export class MainComponent implements OnInit {
     // tslint:disable-next-line: forin
     for (let i in datosTotal) {
       let arrayStgring: string[] = [];
-      arrayStgring.push(datosTotal[i])
       arrayStgring.push(fechaTotal[i])
+      arrayStgring.push(datosTotal[i])
       arrayStgring.push(yearsTotal[i])
       listadoDatos.push(arrayStgring);
     }
@@ -90,6 +90,7 @@ export class MainComponent implements OnInit {
 
   }
   datosProcessMes(datos) {
+    console.log(datos)
     let meses : MesesInterface[] = []
     for (let i in datos.Fecha) {
         let d = datos.Fecha[i]
