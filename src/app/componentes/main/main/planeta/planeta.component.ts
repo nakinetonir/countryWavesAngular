@@ -287,12 +287,16 @@ export class PlanetaComponent implements OnInit {
   }
   selectCountry(event)
   {
+    console.log(event.point.name)
       if(event.point && event.point.name && event.point.name == "United States of America")
       {
-        this.country.next('US')
+          this.country.next('US')
       }
       else if(event.point && event.point.name)
-      this.country.next(event.point.name)
+      {
+          this.country.next(event.point.name)
+      }
+
   }
 
 

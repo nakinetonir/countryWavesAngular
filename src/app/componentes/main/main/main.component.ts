@@ -19,6 +19,7 @@ export class MainComponent implements OnInit {
   datosPorMes
   meseString
   fechaDia
+  fechaNumeroTotal
   movil: number = 320;
   table: number = 740;
   desktop: number = 980
@@ -54,6 +55,7 @@ export class MainComponent implements OnInit {
           this.datosTotal = JSON.parse(x["totalDatos"]).datosTotal
           this.fechaTotal = JSON.parse(x["totalDatos"]).fechaTotal
           this.yearsTotal = JSON.parse(x["totalDatos"]).yearsTotal
+          this.fechaNumeroTotal = JSON.parse(x["totalDatos"]).fechaNumeroTotal
           this.datosMes = JSON.parse(x["totalMeses"]).numberDay
           this.fechaMes = JSON.parse(x["totalMeses"]).Fecha
           this.yearsMes = JSON.parse(x["totalMeses"]).year
@@ -67,30 +69,44 @@ export class MainComponent implements OnInit {
           this.country = event
           this.datosProcessMes(JSON.parse(x["totalMeses"]))
           //this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString , this.yearsMes)
-          this.datosProcess(this.datosTotal, this.fechaTotal,this.yearsTotal)
+          this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal)
 
         }
       )
     }
 
   }
-  datosProcess(datosTotal, fechaTotal,yearsTotal) {
+  /**
+   *function compare( a, b ) {
+  if ( a.last_nom < b.last_nom ){
+    return -1;
+  }
+  if ( a.last_nom > b.last_nom ){
+    return 1;
+  }
+  return 0;
+}
+
+  objs.sort( compare );
+   */
+  datosProcess(datosTotal, fechaTotal,fechaNumeroTotal, yearsTotal) {
     let listadoDatos = []
     // tslint:disable-next-line: forin
     for (let i in datosTotal) {
-      let arrayStgring: string[] = [];
-      arrayStgring.push(fechaTotal[i])
-      arrayStgring.push(datosTotal[i])
-      arrayStgring.push(yearsTotal[i])
-      listadoDatos.push(arrayStgring);
+      let arrayString: string[] = [];
+      arrayString.push(fechaTotal[i])
+      arrayString.push(datosTotal[i])
+      arrayString.push(yearsTotal[i])
+      arrayString.push(fechaNumeroTotal[i])
+      listadoDatos.push(arrayString);
     }
+    listadoDatos = listadoDatos.sort(this.compare)
     this.datos = listadoDatos
     this.countrySelected = true
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
   datosProcessMes(datos) {
-    console.log(datos)
     let meses : MesesInterface[] = []
     for (let i in datos.Fecha) {
         let d = datos.Fecha[i]
@@ -110,6 +126,19 @@ export class MainComponent implements OnInit {
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
+
+  compare( a, b ) {
+    let numerOne = parseInt(a[3])
+    let numberTwo = parseInt(b[3])
+    if ( numerOne < numberTwo ){
+      return -1;
+    }
+    if ( numerOne > numberTwo ){
+      return 1;
+    }
+    return 0;
+  }
+
 
   disntintos(datos)
   {
