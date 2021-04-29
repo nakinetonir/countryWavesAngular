@@ -32,6 +32,8 @@
 
 .right {
     margin-left: -4px;
+    position: relative;
+    bottom: 1px;
 }
 
 .blue--border
@@ -46,4 +48,20 @@
 .positionCenter {
   position: relative;
   top:10%;
+}
+
+
+
+.incidencia {
+  position: relative;
+  left:10px;
+  bottom: 1px;
+}
+
+
+.incidenciaIcon {
+  position: relative;
+  left:10px;
+  margin-right: 6px;
+
 }

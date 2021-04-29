@@ -16,7 +16,7 @@
         (change)="putData()"
         name="selectYears"
       >
-       <option *ngFor="let year of yearsInput">
+        <option *ngFor="let year of yearsInput">
           {{ year }}
         </option>
       </select>
@@ -37,15 +37,14 @@
         [placeholder]="'Month'"
         [data]="mesesSort"
         [(ngModel)]="mesFilter"
-
         [settings]="dropdownSettings"
-        (onSelect)="getMonth($event,true)"
-        (onDeSelect)="getMonth($event,false)"
+        (onSelect)="getMonth($event, true)"
+        (onDeSelect)="getMonth($event, false)"
         (onDeSelectAll)="onDeSelectAllFunct($event)"
         (onSelectAll)="onSelectAllFunct($event)"
       >
       </ng-multiselect-dropdown>
-     <!-- <select
+      <!-- <select
         multi-select
         multiple="multiple"
         class="form-control blueborder"
@@ -65,7 +64,15 @@
     <i class="pi pi-calendar"></i>
     <span class="left">{{ fechaDiaDato | date: " dd MMM yyyy" }} </span
     ><i class="pi pi-chart-bar left"></i>
-    <span class="right">{{ totalDiaDato }}</span>
+    <span class="right">{{ totalDiaDato }}</span
+    ><!---->
+    <i
+      class="pi pi-chart-line incidenciaIcon"
+      *ngIf="incidenciaInput != -1"
+    ></i>
+    <span class="incidencia" *ngIf="incidenciaInput != -1">{{
+      incidenciaInput
+    }}</span>
   </h3>
 </div>
 

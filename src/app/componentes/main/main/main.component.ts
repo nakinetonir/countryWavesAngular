@@ -32,6 +32,7 @@ export class MainComponent implements OnInit {
   years
   yearsMes
   mesesInterface : MesesInterface[] = []
+  incidencia
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     console.log(event.target.innerWidth);
@@ -62,6 +63,7 @@ export class MainComponent implements OnInit {
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
           this.totalCasos = JSON.parse(x["totalCasos"]);
           this.years = JSON.parse(x["years"])
+          this.incidencia = JSON.parse(x["incidencia"])
           this.totalDia = {
             totalDia : JSON.parse(x["totalDia"]),
             fechaDia:x["fechaDia"]

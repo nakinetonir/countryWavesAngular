@@ -54,6 +54,7 @@ export class GraficasComponent implements OnInit {
   desktop: number = 980
   wide: number = 1300
   tamano = "100%"
+  incidenciaInput
   @Input() set datos(datos) {
     if (datos) {
       this.datosInput = datos
@@ -112,6 +113,17 @@ export class GraficasComponent implements OnInit {
   get years() {
     return this.yearsInput;
   }
+
+  @Input() set incidencia(value) {
+    if (value) {
+      this.incidenciaInput = Math.trunc(parseInt(value))
+    }
+  }
+  get incidencia() {
+    return this.incidenciaInput;
+  }
+
+  @Input()
 
   @Input() set years(years) {
     if (years) {
