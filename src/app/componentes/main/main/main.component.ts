@@ -33,6 +33,10 @@ export class MainComponent implements OnInit {
   yearsMes
   mesesInterface : MesesInterface[] = []
   incidencia
+  incidenciaInCountries
+  incidenciaInCountriesCodes
+  incidenciaInCountriesCountry
+  codesIncidence
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     console.log(event.target.innerWidth);
@@ -47,6 +51,22 @@ export class MainComponent implements OnInit {
       let sidebar = document.getElementById('sidebar')
       this.sizeScreen(window.innerWidth,sidebar)
       this._ms.setSizeScreen(window.innerWidth)
+      this.getIncidenciaInCountries()
+  }
+
+  getIncidenciaInCountries()
+  {
+        this._ms.getIncidenciaInCountries().subscribe(
+            x=> {
+                if(x)
+                {
+                  this.incidenciaInCountries = JSON.parse(x["incidenciaInCountries"])
+                  this.incidenciaInCountriesCodes = this.incidenciaInCountries.Code
+                  this.incidenciaInCountriesCountry = this.incidenciaInCountries.incidencia
+                  this.codesProcess(this.incidenciaInCountriesCodes,this.incidenciaInCountriesCountry)
+                }
+            }
+        )
   }
 
   selectCountry(event) {
@@ -64,6 +84,7 @@ export class MainComponent implements OnInit {
           this.totalCasos = JSON.parse(x["totalCasos"]);
           this.years = JSON.parse(x["years"])
           this.incidencia = JSON.parse(x["incidencia"])
+
           this.totalDia = {
             totalDia : JSON.parse(x["totalDia"]),
             fechaDia:x["fechaDia"]
@@ -72,6 +93,7 @@ export class MainComponent implements OnInit {
           this.datosProcessMes(JSON.parse(x["totalMeses"]))
           //this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString , this.yearsMes)
           this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal)
+
 
         }
       )
@@ -127,6 +149,18 @@ export class MainComponent implements OnInit {
     this.datosPorMes = meses;
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
+  }
+  codesProcess(codes,countries)
+  {
+    let listadoCodes = []
+    // tslint:disable-next-line: forin
+    for (let i in codes) {
+      let arrayString: string[] = [];
+      arrayString.push(codes[i])
+      arrayString.push(countries[i])
+      listadoCodes.push(arrayString)
+    }
+    this.codesIncidence = listadoCodes
   }
 
   compare( a, b ) {

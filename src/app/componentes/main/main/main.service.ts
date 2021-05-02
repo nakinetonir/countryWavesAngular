@@ -40,6 +40,13 @@ export class MainService {
     );
   }
 
+  getIncidenciaInCountries() {
+    return this.http.get(
+      `${this.baseUrl}/${environment.getIncidenciaInCountries}`,
+      httpOptions
+    );
+  }
+
   /**
    * Guarda una Hoja de Rentabilidad.
    * @param sheetMain Hoja de Rentabilidad a guardar.

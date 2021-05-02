@@ -11,7 +11,8 @@ export const environment = {
   getWordCount : 'getWordCount',
   postFiltroTuit: 'postFiltroTuit',
   postDataCountry : '/postDataCountry',
-  postPredictCases : 'postPredictCases'
+  postPredictCases : 'postPredictCases',
+  getIncidenciaInCountries: 'getIncidenciaInCountries'
 };
 
 /*

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, HostListener} from '@angular/core';
+import { Component, OnInit, Output, Input,EventEmitter, HostListener} from '@angular/core';
 
 
 import * as Highcharts from "highcharts/highmaps";
@@ -16,14 +16,25 @@ let worldMap = require('@highcharts/map-collection/custom/world.geo.json');
   styleUrls: ['./planeta.component.sass']
 })
 export class PlanetaComponent implements OnInit {
-
-
+  datosOk : boolean = false
+  codesIncidenceInput
   @Output() country = new EventEmitter(null)
+
+  @Input() set codesIncidence(value) {
+    if (value) {
+      this.codesIncidenceInput = value
+      this.loadCodesIncidence(this.codesIncidenceInput)
+    }
+  }
+  get codesIncidence() {
+    return this.codesIncidenceInput;
+  }
+
   Highcharts: typeof Highcharts = Highcharts;
   chartConstructor = "mapChart";
   chartData = [{ code3: "ABW", z: 105 }, { code3: "AFG", z: 35530 }];
 
-  chartOptions: Options = {
+  chartOptions = {
     chart: {
       map: worldMap as any
     },
@@ -61,7 +72,7 @@ export class PlanetaComponent implements OnInit {
           format: "{point.name}"
         },
         allAreas: false,
-        data: [
+        data: [/*
           ["fo", 0],
           ["um", 1],
           ["us", 2],
@@ -274,7 +285,7 @@ export class PlanetaComponent implements OnInit {
           ["is", 209],
           ["eg", 210],
           ["kg", 211],
-          ["np", 212]
+          ["np", 212]*/
         ]
       }
     ]
@@ -298,7 +309,24 @@ export class PlanetaComponent implements OnInit {
       }
 
   }
+  loadCodesIncidence(codes)
+  {
+    //let datosXArray = codes.datos[1] as Array<any>;
+    //let datosYArray = codes.grafica.datos[0] as Array<any>;
+   // this.updateData(datosXArray, datosYArray);
+   this.chartOptions.series[0].data = codes
+   this.datosOk = true
+  }
 
+  updateData(x, y) {
+    if (x.length != undefined) {
+      const codes = (x, y) => x.map((k, i) => [k, y[i]]);
+      //this.chartOptions.data = codes(x, y);
+      this.datosOk = true;
+    }
+
+
+  }
 
 
 
