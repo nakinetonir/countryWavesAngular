@@ -155,9 +155,9 @@ export class MainComponent implements OnInit {
     let listadoCodes = []
     // tslint:disable-next-line: forin
     for (let i in codes) {
-      let arrayString: string[] = [];
+      let arrayString: any[] = [];
       arrayString.push(codes[i])
-      arrayString.push(countries[i])
+      arrayString.push(Math.round(parseInt(countries[i])))
       listadoCodes.push(arrayString)
     }
     this.codesIncidence = listadoCodes
