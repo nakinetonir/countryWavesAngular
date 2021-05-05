@@ -383,7 +383,7 @@ export class GraficasComponent implements OnInit {
     let count = 0
     if (this.filtrosMonth) {
       for (let filtro of this.filtrosMonth) {
-        this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate == filtro.split('-')[0].trim() && this.yearFilter.indexOf(parseInt(x.year)) > -1), count, filtro)
+        this.filterMonth(this.datosPorMesInput.filter(x =>  x.MesDate + ' - ' + x.year == filtro), count, filtro)
         count = count + 1;
       }
     }
@@ -434,7 +434,7 @@ export class GraficasComponent implements OnInit {
 
     let count = 0
     for (let filtro of this.mesesSort) {
-      this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate == filtro.split('-')[0].trim() && this.yearFilter.indexOf(parseInt(x.year)) > -1), count, filtro)
+      this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate + ' - ' + x.year == filtro), count, filtro)
       var index = this.filtrosMonth.indexOf(filtro);
       if (index == -1) {
         this.filtrosMonth.push(filtro)
