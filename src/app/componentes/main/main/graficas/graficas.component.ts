@@ -292,6 +292,13 @@ export class GraficasComponent implements OnInit {
     if (mostrar == "mes") {
       this.mostrarMes = true;
       this.mostrarAno = false;
+      let count = 0
+      if (this.filtrosMonth) {
+        for (let filtro of this.filtrosMonth) {
+          this.filterMonth(this.datosPorMesInput.filter(x =>  x.MesDate + ' - ' + x.year == filtro), count, filtro)
+          count = count + 1;
+        }
+      }
     }
     else {
       this.mostrarAno = true;
