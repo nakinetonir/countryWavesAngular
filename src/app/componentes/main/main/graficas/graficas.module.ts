@@ -4,6 +4,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { GraficasComponent } from './graficas.component';
 import { FormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import {TooltipModule} from 'primeng/tooltip';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CommonModule,
     HighchartsChartModule,
     FormsModule,
+    TooltipModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   exports : [GraficasComponent]

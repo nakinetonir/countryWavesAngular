@@ -9,6 +9,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { GraficasModule} from './graficas/graficas.module'
 
 
+
 @NgModule({
   declarations: [MainComponent],
   imports: [

@@ -26,6 +26,7 @@ export class GraficasComponent implements OnInit {
 
   @Output() onDropdownChange: EventEmitter<any> = new EventEmitter();
   dropdownSettings: IDropdownSettings = {}
+  dropdownSettingsYears: IDropdownSettings = {}
   datosOk: boolean = false
   desktopBoolean: boolean = false
   datosMesOk: boolean = false
@@ -217,6 +218,13 @@ export class GraficasComponent implements OnInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 0
+    };
+    this.dropdownSettingsYears = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All'
     };
     this._ms.getSizeScreen().subscribe(
       x => {

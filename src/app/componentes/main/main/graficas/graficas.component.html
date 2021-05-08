@@ -25,7 +25,7 @@
         [placeholder]="'Years'"
         [data]="yearsInput"
         [(ngModel)]="yearFilter"
-        [settings]="dropdownSettings"
+        [settings]="dropdownSettingsYears"
         (onSelect)="getYear($event, true)"
         (onDeSelect)="getYear($event, false)"
         (onDeSelectAll)="onDeSelectAllYearFunct($event)"
@@ -75,10 +75,10 @@
   <h3 class="h3_day">
     <i class="pi pi-calendar"></i>
     <span class="left">{{ fechaDiaDato | date: " dd MMM yyyy" }} </span
-    ><i class="pi pi-chart-bar left"></i>
+    ><i class="pi pi-chart-bar left" title="Daily cases"></i>
     <span class="right">{{ totalDiaDato }}</span
     ><!---->
-    <i
+    <i title="Notification rate"
       class="pi pi-chart-line incidenciaIcon"
       *ngIf="incidenciaInput != -1"
     ></i>
