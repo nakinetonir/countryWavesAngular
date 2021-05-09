@@ -23,6 +23,7 @@ export class MainService {
   baseUrl = environment.urlServer;
   modal = new BehaviorSubject(false);
   sizeScreen = new BehaviorSubject(false);
+  graficaObject = new BehaviorSubject(null);
   constructor(private http: HttpClient) { }
 
   postData() {
@@ -73,5 +74,13 @@ export class MainService {
   setSizeScreen(val)
   {
       this.sizeScreen.next(val)
+  }
+  setGraficaObject(val)
+  {
+      this.graficaObject.next(val)
+  }
+  getGraficaObject()
+  {
+      return this.graficaObject.asObservable()
   }
 }

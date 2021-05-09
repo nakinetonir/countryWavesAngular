@@ -1,10 +1,10 @@
 import { MesesInterface } from './../interface/meses-interface';
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, AfterContentInit, ChangeDetectorRef } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListadoMounth } from '../enumerables/mounth'
 import { MainService } from '../main.service'
-
+import { GraficaInterface } from '../interface/grafica-interface'
 
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
@@ -22,7 +22,7 @@ noData(Highcharts);
   templateUrl: './graficas.component.html',
   styleUrls: ['./graficas.component.scss']
 })
-export class GraficasComponent implements OnInit {
+export class GraficasComponent implements OnInit, AfterContentInit {
 
   @Output() onDropdownChange: EventEmitter<any> = new EventEmitter();
   dropdownSettings: IDropdownSettings = {}
@@ -62,54 +62,37 @@ export class GraficasComponent implements OnInit {
   mounthYears = []
   incidenciaInput
   datosYearOk: boolean = false
-  @Input() set datos(datos) {
+  /*@Input() set datos(datos) {
     if (datos) {
       this.datosInput = datos
-      this.yearFilter = [2021]
-      this.getYear(2021, true)
-      this.mostrarAno = true;
-      this.mostrarMes = false;
-      this.datosOk = true;
+
     }
   }
   get datos() {
-    return this.datos;
+    return this.datosInput;
   }
 
   @Input() set totalDia(total) {
     if (total) {
       this.totalPorDia = total
-      this.totalDiaDato = this.totalPorDia.totalDia
-      this.fechaDiaDato = this.totalPorDia.fechaDia
+
     }
   }
 
   get totalDia() {
-    return this.totalDia
+    return this.totalPorDia
   }
 
   @Input() set datosPorMes(datosPorMes) {
     if (datosPorMes) {
       this.datosPorMesInput = datosPorMes
-      let mesesFilterYear = this.datosPorMesInput.filter(x => this.yearFilter.indexOf(parseInt(x.year)) > -1)
-      this.mesesSelect = Array.from(new Set(mesesFilterYear.map(x => {
-        return x.MesDate + ' - ' + x.year;
-      })))
-      this.sortMounth()
-      if (this.mesesSelect)
-        this.mesesOk = true
 
-
-      this.mostrarBotoMes = true;
-
-
-      this.meses = datosPorMes
       //this.chartOptions.series[0].data = datos;
       //this.datosOk = true;
     }
   }
   get datosPorMes() {
-    return this.datosPorMes;
+    return this.datosPorMesInput;
   }
 
   @Input() set close(close) {
@@ -118,9 +101,12 @@ export class GraficasComponent implements OnInit {
       this.mostrarMes = false;
     }
   }
-  get years() {
-    return this.yearsInput;
+
+  get close() {
+    return this.close;
   }
+
+
 
   @Input() set incidencia(value) {
     if (value) {
@@ -131,17 +117,18 @@ export class GraficasComponent implements OnInit {
     return this.incidenciaInput;
   }
 
-  @Input()
+
 
   @Input() set years(years) {
     if (years) {
       this.yearsInput = years
-      this.sortMounth()
+
 
     }
   }
-  get close() {
-    return this.close;
+
+  get years() {
+    return this.yearsInput;
   }
 
 
@@ -149,12 +136,12 @@ export class GraficasComponent implements OnInit {
   @Input() set totalCasos(totalCasos) {
     if (totalCasos) {
       this.totalDeCasos = totalCasos
-      this.chartOptions.title.text = "El total de casos actualizado: " + this.totalDeCasos
+      this.chartOptions.title.text = "The total of cases updated: " + this.totalDeCasos
     }
   }
   get totalCasos() {
     return this.totalDeCasos;
-  }
+  }*/
 
   chartOptions = {
     chart: {
@@ -205,9 +192,55 @@ export class GraficasComponent implements OnInit {
       }
     }]
   };
-  constructor(private _ms: MainService) { }
+  constructor(private _ms: MainService, private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this._ms.getGraficaObject().subscribe(
+      x => {
+        if(x)
+        {
+          this.totalDeCasos = x.totalCasos
+          this.chartOptions.title.text = "The total of cases updated: " + this.totalDeCasos
+          this.yearsInput = x.years
+          this.incidenciaInput = Math.trunc(parseInt(x.incidencia))
+          this.datosPorMesInput = x.datosPorMes
+          this.totalPorDia = x.totalCasos
+          this.datosInput = x.datos
+          this.mostrarAno = true;
+          this.mostrarMes = false;
+          this.datosOk = true;
+
+          this.totalDiaDato = x.totalDia.totalDia
+          this.fechaDiaDato = x.totalDia.fechaDia
+
+          this.mesFilter = []
+          let mesesFilterYear = this.datosPorMesInput.filter(x => this.yearFilter.indexOf(parseInt(x.year)) > -1)
+          this.mesesSelect = Array.from(new Set(mesesFilterYear.map(x => {
+            return x.MesDate + ' - ' + x.year;
+          })))
+          this.sortMounth()
+          if (this.mesesSelect)
+            this.mesesOk = true
+
+
+          this.mostrarBotoMes = true;
+
+
+          this.meses = this.datosPorMesInput
+
+          this.yearFilter = this.yearsInput
+          for (let year of this.yearFilter) {
+            this.getYear(year, true)
+          }
+
+
+          this.sortMounth()
+          this.mostrarAno = true;
+          this.mostrarMes = false;
+        }
+
+      }
+    )
 
     this.mesFilter = []
     this.yearFilter = []
@@ -234,6 +267,19 @@ export class GraficasComponent implements OnInit {
 
       }
     )
+
+
+
+
+  }
+
+  ngAfterContentInit() {
+
+
+
+
+
+
 
   }
   getOptions() {
@@ -295,7 +341,7 @@ export class GraficasComponent implements OnInit {
       let count = 0
       if (this.filtrosMonth) {
         for (let filtro of this.filtrosMonth) {
-          this.filterMonth(this.datosPorMesInput.filter(x =>  x.MesDate + ' - ' + x.year == filtro), count, filtro)
+          this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate + ' - ' + x.year == filtro), count, filtro)
           count = count + 1;
         }
       }
@@ -353,14 +399,12 @@ export class GraficasComponent implements OnInit {
         count = count + 1;
         if (this.datosPorMesInput) {
           let mesesFilterYear = this.datosPorMesInput.filter(x => x.year == filtro)
-          if(this.mesesSelect.length>0)
-          {
+          if (this.mesesSelect.length > 0) {
             this.mesesSelect = [...this.mesesSelect, ...Array.from(new Set(mesesFilterYear.map(x => {
               return x.MesDate + ' - ' + x.year;
             })))]
           }
-          else
-          {
+          else {
             this.mesesSelect = Array.from(new Set(mesesFilterYear.map(x => {
               return x.MesDate + ' - ' + x.year;
             })))
@@ -398,7 +442,7 @@ export class GraficasComponent implements OnInit {
     let count = 0
     if (this.filtrosMonth) {
       for (let filtro of this.filtrosMonth) {
-        this.filterMonth(this.datosPorMesInput.filter(x =>  x.MesDate + ' - ' + x.year == filtro), count, filtro)
+        this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate + ' - ' + x.year == filtro), count, filtro)
         count = count + 1;
       }
     }
@@ -482,8 +526,8 @@ export class GraficasComponent implements OnInit {
     let mounthYears = []
     for (let mounth of ListadoMounth) {
       for (let year of this.yearsInput) {
-          let mounthYear = mounth + ' - ' + year
-          mounthYears.push(mounthYear)
+        let mounthYear = mounth + ' - ' + year
+        mounthYears.push(mounthYear)
       }
     }
     this.mounthYears = mounthYears

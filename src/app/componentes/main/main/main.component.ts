@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MainService } from './main.service'
 import { MesesInterface } from './interface/meses-interface'
+import { GraficaInterface} from './interface/grafica-interface'
 
 @Component({
   selector: 'app-main',
@@ -81,18 +82,35 @@ export class MainComponent implements OnInit {
           this.fechaMes = JSON.parse(x["totalMeses"]).Fecha
           this.yearsMes = JSON.parse(x["totalMeses"]).year
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
-          this.totalCasos = JSON.parse(x["totalCasos"]);
-          this.years = JSON.parse(x["years"])
-          this.incidencia = JSON.parse(x["incidencia"])
 
-          this.totalDia = {
-            totalDia : JSON.parse(x["totalDia"]),
-            fechaDia:x["fechaDia"]
-          }
+
+
+
           this.country = event
-          this.datosProcessMes(JSON.parse(x["totalMeses"]))
+          /*
+          datos
+
+
+
+
+
+          * */
+          let graficaObjet: GraficaInterface = {
+              years: JSON.parse(x["years"]),
+              incidencia: JSON.parse(x["incidencia"]),
+              totalCasos : JSON.parse(x["totalCasos"]),
+              totalDia : {
+                totalDia : JSON.parse(x["totalDia"]),
+                fechaDia:x["fechaDia"]
+              },
+              datosPorMes: this.datosProcessMes(JSON.parse(x["totalMeses"])),
+              datos: this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal)
+
+          }
+          this._ms.setGraficaObject(graficaObjet)
+
           //this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString , this.yearsMes)
-          this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal)
+
 
 
         }
@@ -125,8 +143,8 @@ export class MainComponent implements OnInit {
       listadoDatos.push(arrayString);
     }
     listadoDatos = listadoDatos.sort(this.compare)
-    this.datos = listadoDatos
     this.countrySelected = true
+    return listadoDatos
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
@@ -146,7 +164,7 @@ export class MainComponent implements OnInit {
 
     }
 
-    this.datosPorMes = meses;
+    return meses;
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
