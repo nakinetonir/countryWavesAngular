@@ -2,6 +2,9 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { MainService } from './main.service'
 import { MesesInterface } from './interface/meses-interface'
 import { GraficaInterface} from './interface/grafica-interface'
+import { PrediccionesInterface } from './interface/predicciones-interface'
+import { DataSource } from '@angular/cdk/collections';
+
 
 @Component({
   selector: 'app-main',
@@ -38,7 +41,6 @@ export class MainComponent implements OnInit {
   codesIncidence
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    console.log(event.target.innerWidth);
     let sidebar = document.getElementById('sidebar')
     this.sizeScreen(event.target.innerWidth, sidebar)
     this._ms.setSizeScreen(window.innerWidth)
@@ -90,12 +92,13 @@ export class MainComponent implements OnInit {
                 fechaDia:x["fechaDia"]
               },
               datosPorMes: this.datosProcessMes(JSON.parse(x["totalMeses"])),
-              datos: this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal)
+              datos: this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal),
+              predicciones: this.datosPredicciones(JSON.parse(x["predictions"])),
 
           }
           this._ms.setGraficaObject(graficaObjet)
 
-          //this.datosProcessMes(this.datosMes, this.fechaMes, this.meseString , this.yearsMes)
+
 
 
 
@@ -104,19 +107,7 @@ export class MainComponent implements OnInit {
     }
 
   }
-  /**
-   *function compare( a, b ) {
-  if ( a.last_nom < b.last_nom ){
-    return -1;
-  }
-  if ( a.last_nom > b.last_nom ){
-    return 1;
-  }
-  return 0;
-}
 
-  objs.sort( compare );
-   */
   datosProcess(datosTotal, fechaTotal,fechaNumeroTotal, yearsTotal) {
     let listadoDatos = []
     // tslint:disable-next-line: forin
@@ -137,7 +128,6 @@ export class MainComponent implements OnInit {
   datosProcessMes(datos) {
     let meses : MesesInterface[] = []
     for (let i in datos.Fecha) {
-        let d = datos.Fecha[i]
         let diaInterface : MesesInterface =
         {
           Fecha : datos.Fecha[i],
@@ -151,6 +141,25 @@ export class MainComponent implements OnInit {
     }
 
     return meses;
+    //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
+
+  }
+  datosPredicciones(datos) {
+    let predicciones : PrediccionesInterface[] = []
+    for (let i in datos.cases) {
+        let prediccion : PrediccionesInterface =
+        {
+          casos: Math.trunc(parseInt(datos.cases[i])),
+          fecha : datos.fecha[i],
+          fechaNumber: datos.fechaNumber[i],
+          stringMes: datos.stringMes[i]
+
+        }
+        predicciones.push(prediccion)
+
+    }
+
+    return predicciones;
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }

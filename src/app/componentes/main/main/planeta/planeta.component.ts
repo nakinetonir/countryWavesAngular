@@ -99,7 +99,6 @@ export class PlanetaComponent implements OnInit {
   {
     //let datosXArray = codes.datos[1] as Array<any>;
     //let datosYArray = codes.grafica.datos[0] as Array<any>;
-    console.log(codes)
    // this.updateData(datosXArray, datosYArray);
    this.chartOptions.series[0].data = codes
    this.datosOk = true

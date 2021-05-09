@@ -5,7 +5,6 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListadoMounth } from '../enumerables/mounth'
 import { MainService } from '../main.service'
 import { GraficaInterface } from '../interface/grafica-interface'
-import { ThrowStmt } from '@angular/compiler';
 
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
@@ -30,14 +29,15 @@ export class GraficasComponent implements OnInit, AfterContentInit {
   dropdownSettingsYears: IDropdownSettings = {}
   datosOk: boolean = false
   desktopBoolean: boolean = false
-  datosMesOk: boolean = false
   highcharts: typeof Highcharts = Highcharts;
   meses
   mesesArray
   optionsMonth = []
+  optionsMonthPredictions = []
   optionsYear = []
   mostrarAno: boolean = true;
   mostrarMes: boolean = false;
+  mostrarPre : boolean = false;
   mostrarBotoMes: boolean = false;
   totalDeCasos
   totalPorDia
@@ -48,11 +48,17 @@ export class GraficasComponent implements OnInit, AfterContentInit {
   mesFilter
   yearFilter
   mesesSelect
+  mesesSelectPredicionts
+  mesesSortPredictions
+  filtrosMonthPredictions = []
+  mesFilterPredictions
   datosPorMesInput
+  datosPorMesInputPredictions
   filtrosMonth = []
   filtrosYears = []
   enableCheckAll: boolean = true
   mesesOk: boolean = false
+  preOk: boolean = false
   mesesSort
   movil: number = 320;
   table: number = 740;
@@ -88,14 +94,14 @@ export class GraficasComponent implements OnInit, AfterContentInit {
     yAxis: {
       min: 0,
       title: {
-        text: 'Total de Casos'
+        text: 'Total Cases'
       },
     },
     legend: {
       enabled: false
     },
     tooltip: {
-      pointFormat: 'Casos Covic'
+      pointFormat: 'Cases Covic'
     },
     series: [{
       name: 'Casos',
@@ -121,17 +127,13 @@ export class GraficasComponent implements OnInit, AfterContentInit {
       x => {
         if(x)
         {
-          this.mesFilter = []
-          this.yearFilter = []
-          this.optionsMonth = []
-          this.optionsYear = []
-          this.filtrosMonth= []
-          this.filtrosYears = []
+          this.resetAll()
           this.totalDeCasos = x.totalCasos
           this.chartOptions.title.text = "The total of cases updated: " + this.totalDeCasos
           this.yearsInput = x.years
           this.incidenciaInput = Math.trunc(parseInt(x.incidencia))
           this.datosPorMesInput = x.datosPorMes
+          this.datosPorMesInputPredictions = x.predicciones
           this.totalPorDia = x.totalCasos
           this.datosInput = x.datos
 
@@ -143,11 +145,14 @@ export class GraficasComponent implements OnInit, AfterContentInit {
           this.mesesSelect = Array.from(new Set(mesesFilterYear.map(x => {
             return x.MesDate + ' - ' + x.year;
           })))
+          this.mesesSelectPredicionts = Array.from(new Set(this.datosPorMesInputPredictions.map(x => {
+            return x.stringMes;
+          })))
           this.getYear(this.yearFilter, true)
           this.meses = this.datosPorMesInput
 
           this.sortMounth()
-
+          this.sortMounthPredictions()
 
 
           this.mostrarBotoMes = true;
@@ -156,8 +161,10 @@ export class GraficasComponent implements OnInit, AfterContentInit {
 
           this.mostrarAno = true;
           this.mostrarMes = false;
+          this.mostrarPre = false;
           this.datosOk = true;
           this.mesesOk = true
+          this.preOk = true
           this.buttonMonths = true
 
         }
@@ -207,7 +214,7 @@ export class GraficasComponent implements OnInit, AfterContentInit {
   getOptions() {
     let chartOptions = {
       chart: {
-        type: 'column'
+        type: 'column',
       },
       title: {
         text: ''
@@ -228,14 +235,14 @@ export class GraficasComponent implements OnInit, AfterContentInit {
       yAxis: {
         min: 0,
         title: {
-          text: 'Total de Casos'
+          text: 'Total Cases'
         }
       },
       legend: {
         enabled: false
       },
       tooltip: {
-        pointFormat: 'Casos Covic'
+        pointFormat: 'Cases Covic'
       },
       series: [{
         name: 'Casos',
@@ -251,7 +258,8 @@ export class GraficasComponent implements OnInit, AfterContentInit {
             fontSize: '13px',
             fontFamily: 'Verdana, sans-serif'
           }
-        }
+        },
+        color: ''
       }]
     };
     return chartOptions;
@@ -260,15 +268,27 @@ export class GraficasComponent implements OnInit, AfterContentInit {
     if (mostrar == "mes") {
       this.mostrarMes = true;
       this.mostrarAno = false;
+      this.mostrarPre = false;
       if (this.filtrosMonth) {
         for (let filtro of this.filtrosMonth) {
           this.filterMonth(this.datosPorMesInput.filter(x => x.MesDate + ' - ' + x.year == filtro), filtro)
         }
       }
     }
+    else if (mostrar == "pre") {
+      this.mostrarMes = false;
+      this.mostrarAno = false;
+      this.mostrarPre = true;
+      if (this.filtrosMonthPredictions) {
+        for (let filtro of this.filtrosMonthPredictions) {
+          this.filterMonthPredictions(this.datosPorMesInput.filter(x => x.stringMes == filtro), filtro)
+        }
+      }
+    }
     else {
       this.mostrarAno = true;
       this.mostrarMes = false;
+      this.mostrarPre = false;
     }
   }
 
@@ -289,6 +309,7 @@ export class GraficasComponent implements OnInit, AfterContentInit {
         this.filtrosYears.splice(index, 1);
       }
     }
+    this.optionsYear = []
     if (this.filtrosYears) {
       for (let filtro of this.filtrosYears) {
         this.filterYears(this.datosInput.filter(x => x[2] == filtro),filtro)
@@ -340,6 +361,48 @@ export class GraficasComponent implements OnInit, AfterContentInit {
 
 
   }
+  getMonthPredictions(event, accion) {
+    if (accion) {
+      var index = this.filtrosMonthPredictions.indexOf(event);
+      if (index == -1) {
+        this.filtrosMonthPredictions.push(event)
+      }
+
+    }
+    else {
+      var index = this.filtrosMonthPredictions.indexOf(event);
+      if (index > -1) {
+        this.filtrosMonthPredictions.splice(index, 1);
+      }
+    }
+    this.optionsMonthPredictions = []
+    if (this.filtrosMonthPredictions) {
+      for (let filtro of this.filtrosMonthPredictions) {
+        this.filterMonthPredictions(this.datosPorMesInputPredictions.filter(x => x.stringMes == filtro), filtro)
+      }
+    }
+
+
+
+  }
+  filterMonthPredictions(datos,  month) {
+
+    datos = datos.sort((a, b) => {
+      return <any>new Date(a.Fecha) - <any>new Date(b.Fecha);
+    });
+    let data = datos.map((x) => {
+      let r = []
+      r.push(x.fecha)
+      r.push(x.casos)
+      return r
+    })
+    let optionCount = this.getOptions()
+    optionCount.series[0].data = data;
+    optionCount.series[0].color = '#CD5C5C'
+    optionCount.title.text = month
+    this.optionsMonthPredictions[this.optionsMonthPredictions.length] = optionCount
+  }
+
   filterMonth(datos,  month) {
 
     datos = datos.sort((a, b) => {
@@ -355,7 +418,6 @@ export class GraficasComponent implements OnInit, AfterContentInit {
     optionCount.series[0].data = data;
     optionCount.title.text = month
     this.optionsMonth[this.optionsMonth.length] = optionCount
-    this.datosMesOk = true;
   }
 
   filterYears(datos, year) {
@@ -374,7 +436,6 @@ export class GraficasComponent implements OnInit, AfterContentInit {
     optionCount.title.text = year
     this.optionsYear[this.optionsYear.length] = optionCount
     this.datosYearOk = true;
-    console.log(this.optionsYear)
   }
   onDeSelectAllMonthFunct($event) {
     this.filtrosMonth = []
@@ -395,9 +456,31 @@ export class GraficasComponent implements OnInit, AfterContentInit {
 
 
   }
+
+  onDeSelectAllMonthPredictionsFunct($event) {
+    this.filtrosMonthPredictions = []
+    this.optionsMonthPredictions = []
+  }
+
+  onSelectAllMonthPredictionsFunct($event) {
+
+   this.filtrosMonthPredictions = []
+    for (let filtro of this.mesesSortPredictions) {
+      this.filterMonthPredictions(this.datosPorMesInputPredictions.filter(x => x.stringMes == filtro), filtro)
+      var index = this.filtrosMonthPredictions.indexOf(filtro);
+      if (index == -1) {
+        this.filtrosMonthPredictions.push(filtro)
+      }
+
+    }
+
+
+  }
   onDeSelectAllYearFunct($event) {
     this.filtrosYears = []
     this.optionsYear = []
+    this.filtrosMonth = []
+    this.optionsMonth = []
     this.mesesOk = false
     this.buttonMonths = false
   }
@@ -464,6 +547,26 @@ export class GraficasComponent implements OnInit, AfterContentInit {
 
   }
 
+  sortMounthPredictions() {
+    if (this.mesesSelectPredicionts) {
+      let mesesSortPredictions = Array.apply(null, Array(this.mesesSelectPredicionts.length)).map(function () { })
+      for (let mounth of this.mesesSelectPredicionts) {
+        var index = ListadoMounth.indexOf(mounth);
+        mesesSortPredictions[index] = mounth
+      }
+      let indices = mesesSortPredictions.reduce(function (r, v, i) {
+        return r.concat(v === undefined ? i : []);
+      }, []);
+      mesesSortPredictions = mesesSortPredictions.filter(function (value, index) {
+        return indices.indexOf(index) == -1;
+      })
+
+      this.mesesSortPredictions = mesesSortPredictions
+    }
+
+  }
+
+
   sizeScreen(size, element) {
     if (size <= this.movil) {
       element.classList.remove("positionCenter")
@@ -489,5 +592,18 @@ export class GraficasComponent implements OnInit, AfterContentInit {
     }
 
 
+  }
+
+  resetAll()
+  {
+    this.mesFilter = []
+    this.yearFilter = []
+    this.mesFilterPredictions = []
+    this.optionsMonth = []
+    this.optionsYear = []
+    this.optionsMonthPredictions = []
+    this.filtrosMonthPredictions = []
+    this.filtrosMonth= []
+    this.filtrosYears = []
   }
 }

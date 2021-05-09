@@ -4,5 +4,6 @@ export interface GraficaInterface {
   incidencia
   totalCasos
   totalDia
-  years
+  years,
+  predicciones
 }

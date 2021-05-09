@@ -57,22 +57,36 @@
         (onSelectAll)="onSelectAllMonthFunct($event)"
       >
       </ng-multiselect-dropdown>
-      <!-- <select
-        multi-select
-        multiple="multiple"
-        class="form-control blueborder"
-        [(ngModel)]="mesFilter"
-        (change)="getMounth()"
-        name="mesFilter"
+
+    </div>
+
+  </div>
+ <div class="row separed">
+    <div class="col-8 col-sm-8 col-md-3 col-lg-3">
+      <button
+        type="button"
+        class="btn btn-outline-warning btn-block"
+        [disabled]="!buttonMonths"
+        (click)="mostrar('pre')"
       >
-        <option value="0" disabled>Month</option>
-        <option *ngFor="let month of mesesSelect">
-          {{ month }}
-        </option>
-      </select>-->
+        Predictions
+      </button>
+    </div>
+    <div class="col-8 col-sm-8 col-md-3 col-lg-3" *ngIf="preOk">
+      <ng-multiselect-dropdown
+        [placeholder]="'Predictions'"
+        [data]="mesesSortPredictions"
+        [(ngModel)]="mesFilterPredictions"
+        [settings]="dropdownSettings"
+        (onSelect)="getMonthPredictions($event, true)"
+        (onDeSelect)="getMonthPredictions($event, false)"
+        (onDeSelectAll)="onDeSelectAllMonthPredictionsFunct($event)"
+        (onSelectAll)="onSelectAllMonthPredictionsFunct($event)"
+      >
+      </ng-multiselect-dropdown>
+
     </div>
   </div>
-
   <h3 class="h3_day">
     <i class="pi pi-calendar"></i>
     <span class="left">{{ fechaDiaDato | date: " dd MMM yyyy" }} </span
@@ -91,7 +105,6 @@
 <div *ngIf="desktopBoolean">
   <br />
   <br />
-  <br />
 </div>
 <div *ngIf="mostrarAno"   class="graficas__body" id="top">
  <div *ngFor="let datos of filtrosYears; let i = index">
@@ -105,20 +118,27 @@
     <br />
     <br />
   </div>
-<!--
-  <highcharts-chart
-    [Highcharts]="highcharts"
-    [options]="chartOptions"
-    [(update)]="datosOk"
-    style="width: 80%; height: 80%; display: block"
-  >
-  </highcharts-chart>-->
+
 </div>
 <div *ngIf="mostrarMes" class="graficas__body" id="top">
   <div *ngFor="let datos of filtrosMonth; let i = index">
     <highcharts-chart
       [Highcharts]="highcharts"
       [options]="optionsMonth[i]"
+      style="width: 80%; height: 80%; display: block"
+    >
+    </highcharts-chart>
+    <br />
+    <br />
+  </div>
+</div>
+
+
+<div *ngIf="mostrarPre" class="graficas__body" id="top">
+  <div *ngFor="let datos of filtrosMonthPredictions; let i = index">
+    <highcharts-chart
+      [Highcharts]="highcharts"
+      [options]="optionsMonthPredictions[i]"
       style="width: 80%; height: 80%; display: block"
     >
     </highcharts-chart>
