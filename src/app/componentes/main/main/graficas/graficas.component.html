@@ -39,6 +39,7 @@
       <button
         type="button"
         class="btn btn-outline-primary btn-block"
+        [disabled]="!buttonMonths"
         (click)="mostrar('mes')"
       >
         Per month

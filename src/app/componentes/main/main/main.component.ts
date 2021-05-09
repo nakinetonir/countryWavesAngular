@@ -30,10 +30,8 @@ export class MainComponent implements OnInit {
   totalCasos;
   meses : string[]
   yearsTotal
-  years
   yearsMes
   mesesInterface : MesesInterface[] = []
-  incidencia
   incidenciaInCountries
   incidenciaInCountriesCodes
   incidenciaInCountriesCountry
@@ -82,19 +80,7 @@ export class MainComponent implements OnInit {
           this.fechaMes = JSON.parse(x["totalMeses"]).Fecha
           this.yearsMes = JSON.parse(x["totalMeses"]).year
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
-
-
-
-
           this.country = event
-          /*
-          datos
-
-
-
-
-
-          * */
           let graficaObjet: GraficaInterface = {
               years: JSON.parse(x["years"]),
               incidencia: JSON.parse(x["incidencia"]),
