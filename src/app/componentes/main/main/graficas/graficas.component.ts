@@ -141,14 +141,10 @@ export class GraficasComponent implements OnInit, AfterContentInit {
           this.totalDiaDato = x.totalDia.totalDia
           this.fechaDiaDato = x.totalDia.fechaDia
           this.yearFilter.push(this.yearsInput[this.yearsInput.length-1])
-          let mesesFilterYear = this.datosPorMesInput.filter(x => this.yearFilter.indexOf(parseInt(x.year)) > -1)
-          this.mesesSelect = Array.from(new Set(mesesFilterYear.map(x => {
-            return x.MesDate + ' - ' + x.year;
-          })))
           this.mesesSelectPredicionts = Array.from(new Set(this.datosPorMesInputPredictions.map(x => {
             return x.stringMes;
           })))
-          this.getYear(this.yearFilter, true)
+          this.getYear(this.yearsInput[this.yearsInput.length-1], true)
           this.meses = this.datosPorMesInput
 
           this.sortMounth()
@@ -312,7 +308,7 @@ export class GraficasComponent implements OnInit, AfterContentInit {
     this.optionsYear = []
     this.mesesSelect = []
     this.mesesSort = []
-    if (this.filtrosYears) {
+    if (this.filtrosYears.length>0) {
       for (let filtro of this.filtrosYears) {
         this.filterYears(this.datosInput.filter(x => x[2] == filtro),filtro)
          if (this.datosPorMesInput) {
@@ -334,6 +330,8 @@ export class GraficasComponent implements OnInit, AfterContentInit {
         this.buttonMonths = true
       }
     }
+
+
 
 
 
