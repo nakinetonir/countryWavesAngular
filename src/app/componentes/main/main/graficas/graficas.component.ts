@@ -310,6 +310,8 @@ export class GraficasComponent implements OnInit, AfterContentInit {
       }
     }
     this.optionsYear = []
+    this.mesesSelect = []
+    this.mesesSort = []
     if (this.filtrosYears) {
       for (let filtro of this.filtrosYears) {
         this.filterYears(this.datosInput.filter(x => x[2] == filtro),filtro)
@@ -479,8 +481,6 @@ export class GraficasComponent implements OnInit, AfterContentInit {
   onDeSelectAllYearFunct($event) {
     this.filtrosYears = []
     this.optionsYear = []
-    this.filtrosMonth = []
-    this.optionsMonth = []
     this.mesesOk = false
     this.buttonMonths = false
   }
@@ -488,6 +488,7 @@ export class GraficasComponent implements OnInit, AfterContentInit {
   onSelectAllYearFunct($event) {
 
    this.filtrosYears = []
+   this.optionsYear = []
     for (let filtro of this.yearsInput) {
       this.filterYears(this.datosInput.filter(x => x[2] == filtro), filtro)
         if (this.datosPorMesInput) {
