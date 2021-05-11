@@ -2,7 +2,7 @@
 <br/>
 <br/>
 <br/>
-<app-planeta (country)="selectCountry($event)" [codesIncidence]="codesIncidence"></app-planeta>
+<app-planeta (country)="selectCountry($event)" [codesIncidence]="codesIncidence" [dates]="dates"></app-planeta>
 
 <p-sidebar [style]="{'width' :  tamano }" [(visible)]="countrySelected" [baseZIndex]="10000" (onHide)="onHide()" id="sidebar" *ngIf="countrySelected">
     <h1 style="font-weight:normal">{{country}}</h1>

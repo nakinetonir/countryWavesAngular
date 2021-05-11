@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input,EventEmitter, HostListener} from '@angular/core';
-
+import { MainService } from '../main.service'
 
 import * as Highcharts from "highcharts/highmaps";
 import { Options } from "highcharts";
@@ -13,12 +13,15 @@ let worldMap = require('@highcharts/map-collection/custom/world.geo.json');
 @Component({
   selector: 'app-planeta',
   templateUrl: './planeta.component.html',
-  styleUrls: ['./planeta.component.sass']
+  styleUrls: ['./planeta.component.scss']
 })
 export class PlanetaComponent implements OnInit {
   datosOk : boolean = false
   codesIncidenceInput
+  selectDate
   @Output() country = new EventEmitter(null)
+
+  @Input() dates
 
   @Input() set codesIncidence(value) {
     if (value) {
@@ -78,7 +81,7 @@ export class PlanetaComponent implements OnInit {
     ]
   };
 
-  constructor() { }
+  constructor(private _ms:MainService) { }
 
   ngOnInit(): void {
 
@@ -112,6 +115,34 @@ export class PlanetaComponent implements OnInit {
     }
 
 
+  }
+
+  codesProcess(codes,countries)
+  {
+    let listadoCodes = []
+    // tslint:disable-next-line: forin
+    for (let i in codes) {
+      let arrayString: any[] = [];
+      arrayString.push(codes[i])
+      arrayString.push(Math.round(parseInt(countries[i])))
+      listadoCodes.push(arrayString)
+    }
+    this.loadCodesIncidence(listadoCodes)
+  }
+
+
+  changeDate()
+  {
+      let month = this.selectDate.split('-')[0].trim()
+      let year = this.selectDate.split('-')[1].trim()
+      this._ms.postIncidenciaInCountriesByDate(month,year).subscribe(
+          x=>{
+            let incidenciaInCountries = JSON.parse(x["incidenciaInCountriesByDate"])
+            let incidenciaInCountriesCodes = incidenciaInCountries.Code
+            let incidenciaInCountriesCountry = incidenciaInCountries.incidencia
+            this.codesProcess(incidenciaInCountriesCodes,incidenciaInCountriesCountry)
+          }
+      )
   }
 
 

@@ -39,6 +39,7 @@ export class MainComponent implements OnInit {
   incidenciaInCountriesCodes
   incidenciaInCountriesCountry
   codesIncidence
+  dates
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     let sidebar = document.getElementById('sidebar')
@@ -53,6 +54,18 @@ export class MainComponent implements OnInit {
       this.sizeScreen(window.innerWidth,sidebar)
       this._ms.setSizeScreen(window.innerWidth)
       this.getIncidenciaInCountries()
+      this.getMesesPandemic()
+  }
+
+  getMesesPandemic()
+  {
+      this._ms.getMesesPandemic().subscribe(
+          x=> {
+            let fechaTotal = JSON.parse(x["mesesPandemic"]).fechaTotal
+            let yearsTotal = JSON.parse(x["mesesPandemic"]).yearsTotal
+            this.monthYear(fechaTotal,yearsTotal)
+          }
+      )
   }
 
   getIncidenciaInCountries()
@@ -97,6 +110,7 @@ export class MainComponent implements OnInit {
 
           }
           this._ms.setGraficaObject(graficaObjet)
+
 
 
 
@@ -228,5 +242,18 @@ sizeScreen(size, sidebar) {
   }
 
 
+}
+
+monthYear(fecha,años)
+{
+  let arrayString: any[] = [];
+  for (let i in fecha) {
+
+    let date = fecha[i] + ' - ' + años[i]
+    arrayString.push(date)
+  }
+  this.dates = Array.from(new Set(arrayString.map(x => {
+    return x;
+  })))
 }
 }

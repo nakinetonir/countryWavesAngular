@@ -48,6 +48,24 @@ export class MainService {
     );
   }
 
+
+  getMesesPandemic() {
+    return this.http.get(
+      `${this.baseUrl}/${environment.getMesesPandemic}`,
+      httpOptions
+    );
+  }
+
+  postIncidenciaInCountriesByDate(month,year)
+  {
+    let body = JSON.stringify({ 'month': month, 'year': year });
+    return this.http.post(
+      `${this.baseUrl}/${environment.postIncidenciaInCountriesByDate}`,
+      body,
+      httpOptions
+    );
+  }
+
   /**
    * Guarda una Hoja de Rentabilidad.
    * @param sheetMain Hoja de Rentabilidad a guardar.

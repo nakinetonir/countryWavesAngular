@@ -12,7 +12,9 @@ export const environment = {
   postFiltroTuit: 'postFiltroTuit',
   postDataCountry : '/postDataCountry',
   postPredictCases : 'postPredictCases',
-  getIncidenciaInCountries: 'getIncidenciaInCountries'
+  getIncidenciaInCountries: 'getIncidenciaInCountries',
+  postIncidenciaInCountriesByDate: 'postIncidenciaInCountriesByDate',
+  getMesesPandemic:'getMesesPandemic'
 };
 
 /*
