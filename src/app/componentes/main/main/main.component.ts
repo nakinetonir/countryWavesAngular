@@ -30,6 +30,7 @@ export class MainComponent implements OnInit {
   wide: number = 1300
   close: boolean = false;
   tamano = "35%"
+  spinner:boolean = false
   totalCasos;
   meses : string[]
   yearsTotal
@@ -85,6 +86,7 @@ export class MainComponent implements OnInit {
 
   selectCountry(event) {
     if (event) {
+      this.spinner = true
       this._ms.postDataCountry(event).subscribe(
         x => {
           this.datosTotal = JSON.parse(x["totalDatos"]).datosTotal
@@ -109,6 +111,7 @@ export class MainComponent implements OnInit {
               predicciones: this.datosPredicciones(JSON.parse(x["predictions"])),
 
           }
+          this.spinner = false;
           this._ms.setGraficaObject(graficaObjet)
 
 
@@ -117,7 +120,10 @@ export class MainComponent implements OnInit {
 
 
         }
-      )
+      ),
+      error => {
+          this.spinner = false
+      }
     }
 
   }
@@ -255,5 +261,9 @@ monthYear(fecha,años)
   this.dates = Array.from(new Set(arrayString.map(x => {
     return x;
   })))
+}
+setSpinner(event)
+{
+    this.spinner = event
 }
 }

@@ -7,7 +7,7 @@ import { PlanetaModule } from './planeta/planeta.module'
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { GraficasModule} from './graficas/graficas.module'
-
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -18,7 +18,8 @@ import { GraficasModule} from './graficas/graficas.module'
     PlanetaModule,
     ButtonModule,
     SidebarModule,
-    GraficasModule
+    GraficasModule,
+    ProgressSpinnerModule
 
 
   ],

@@ -20,6 +20,7 @@ export class PlanetaComponent implements OnInit {
   codesIncidenceInput
   selectDate
   @Output() country = new EventEmitter(null)
+  @Output() spinner = new EventEmitter(false)
 
   @Input() dates
 
@@ -133,6 +134,7 @@ export class PlanetaComponent implements OnInit {
 
   changeDate()
   {
+      this.spinner.next(true)
       let month = this.selectDate.split('-')[0].trim()
       let year = this.selectDate.split('-')[1].trim()
       this._ms.postIncidenciaInCountriesByDate(month,year).subscribe(
@@ -141,6 +143,11 @@ export class PlanetaComponent implements OnInit {
             let incidenciaInCountriesCodes = incidenciaInCountries.Code
             let incidenciaInCountriesCountry = incidenciaInCountries.incidencia
             this.codesProcess(incidenciaInCountriesCodes,incidenciaInCountriesCountry)
+            this.spinner.next(false)
+          },
+          error=>
+          {
+            this.spinner.next(false)
           }
       )
   }

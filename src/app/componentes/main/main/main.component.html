@@ -1,8 +1,7 @@
 <br/>
 <br/>
-<br/>
-<br/>
-<app-planeta (country)="selectCountry($event)" [codesIncidence]="codesIncidence" [dates]="dates"></app-planeta>
+<p-progressSpinner *ngIf="spinner" class="spinner"></p-progressSpinner>
+<app-planeta (country)="selectCountry($event)" [codesIncidence]="codesIncidence" [dates]="dates" (spinner)="setSpinner($event)"></app-planeta>
 
 <p-sidebar [style]="{'width' :  tamano }" [(visible)]="countrySelected" [baseZIndex]="10000" (onHide)="onHide()" id="sidebar" *ngIf="countrySelected">
     <h1 style="font-weight:normal">{{country}}</h1>
