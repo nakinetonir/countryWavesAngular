@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MainService } from './main.service'
 import { MesesInterface } from './interface/meses-interface'
-import { GraficaInterface} from './interface/grafica-interface'
+import { GraficaInterface } from './interface/grafica-interface'
 import { PrediccionesInterface } from './interface/predicciones-interface'
 import { DataSource } from '@angular/cdk/collections';
+import { DateIncident } from './interface/date-incident'
 
 
 @Component({
@@ -30,12 +31,12 @@ export class MainComponent implements OnInit {
   wide: number = 1300
   close: boolean = false;
   tamano = "35%"
-  spinner:boolean = false
+  spinner: boolean = false
   totalCasos;
-  meses : string[]
+  meses: string[]
   yearsTotal
   yearsMes
-  mesesInterface : MesesInterface[] = []
+  mesesInterface: MesesInterface[] = []
   incidenciaInCountries
   incidenciaInCountriesCodes
   incidenciaInCountriesCountry
@@ -51,37 +52,36 @@ export class MainComponent implements OnInit {
   constructor(private _ms: MainService) { }
 
   ngOnInit(): void {
-      let sidebar = document.getElementById('sidebar')
-      this.sizeScreen(window.innerWidth,sidebar)
-      this._ms.setSizeScreen(window.innerWidth)
-      this.getIncidenciaInCountries()
-      this.getMesesPandemic()
+    this.spinner = true
+    let sidebar = document.getElementById('sidebar')
+    this.sizeScreen(window.innerWidth, sidebar)
+    this._ms.setSizeScreen(window.innerWidth)
+    this.getIncidenciaInCountries()
+    this.getMesesPandemic()
   }
 
-  getMesesPandemic()
-  {
-      this._ms.getMesesPandemic().subscribe(
-          x=> {
-            let fechaTotal = JSON.parse(x["mesesPandemic"]).fechaTotal
-            let yearsTotal = JSON.parse(x["mesesPandemic"]).yearsTotal
-            this.monthYear(fechaTotal,yearsTotal)
-          }
-      )
+  getMesesPandemic() {
+    this._ms.getMesesPandemic().subscribe(
+      x => {
+        let fechaTotal = JSON.parse(x["mesesPandemic"]).fechaTotal
+        let yearsTotal = JSON.parse(x["mesesPandemic"]).yearsTotal
+        this.monthYear(fechaTotal, yearsTotal)
+        this.spinner = false
+      }
+    )
   }
 
-  getIncidenciaInCountries()
-  {
-        this._ms.getIncidenciaInCountries().subscribe(
-            x=> {
-                if(x)
-                {
-                  this.incidenciaInCountries = JSON.parse(x["incidenciaInCountries"])
-                  this.incidenciaInCountriesCodes = this.incidenciaInCountries.Code
-                  this.incidenciaInCountriesCountry = this.incidenciaInCountries.incidencia
-                  this.codesProcess(this.incidenciaInCountriesCodes,this.incidenciaInCountriesCountry)
-                }
-            }
-        )
+  getIncidenciaInCountries() {
+    this._ms.getIncidenciaInCountries().subscribe(
+      x => {
+        if (x) {
+          this.incidenciaInCountries = JSON.parse(x["incidenciaInCountries"])
+          this.incidenciaInCountriesCodes = this.incidenciaInCountries.Code
+          this.incidenciaInCountriesCountry = this.incidenciaInCountries.incidencia
+          this.codesProcess(this.incidenciaInCountriesCodes, this.incidenciaInCountriesCountry)
+        }
+      }
+    )
   }
 
   selectCountry(event) {
@@ -99,16 +99,16 @@ export class MainComponent implements OnInit {
           this.meseString = JSON.parse(x["totalMeses"]).MesDate
           this.country = event
           let graficaObjet: GraficaInterface = {
-              years: JSON.parse(x["years"]),
-              incidencia: JSON.parse(x["incidencia"]),
-              totalCasos : JSON.parse(x["totalCasos"]),
-              totalDia : {
-                totalDia : JSON.parse(x["totalDia"]),
-                fechaDia:x["fechaDia"]
-              },
-              datosPorMes: this.datosProcessMes(JSON.parse(x["totalMeses"])),
-              datos: this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal),
-              predicciones: this.datosPredicciones(JSON.parse(x["predictions"])),
+            years: JSON.parse(x["years"]),
+            incidencia: JSON.parse(x["incidencia"]),
+            totalCasos: JSON.parse(x["totalCasos"]),
+            totalDia: {
+              totalDia: JSON.parse(x["totalDia"]),
+              fechaDia: x["fechaDia"]
+            },
+            datosPorMes: this.datosProcessMes(JSON.parse(x["totalMeses"])),
+            datos: this.datosProcess(this.datosTotal, this.fechaTotal, this.fechaNumeroTotal, this.yearsTotal),
+            predicciones: this.datosPredicciones(JSON.parse(x["predictions"])),
 
           }
           this.spinner = false;
@@ -121,14 +121,14 @@ export class MainComponent implements OnInit {
 
         }
       ),
-      error => {
+        error => {
           this.spinner = false
-      }
+        }
     }
 
   }
 
-  datosProcess(datosTotal, fechaTotal,fechaNumeroTotal, yearsTotal) {
+  datosProcess(datosTotal, fechaTotal, fechaNumeroTotal, yearsTotal) {
     let listadoDatos = []
     // tslint:disable-next-line: forin
     for (let i in datosTotal) {
@@ -146,17 +146,17 @@ export class MainComponent implements OnInit {
 
   }
   datosProcessMes(datos) {
-    let meses : MesesInterface[] = []
+    let meses: MesesInterface[] = []
     for (let i in datos.Fecha) {
-        let diaInterface : MesesInterface =
-        {
-          Fecha : datos.Fecha[i],
-          variable : datos.variable[i],
-          year : datos.year[i],
-          numberDay : datos.numberDay[i],
-          MesDate : datos.MesDate[i]
-        }
-        meses.push(diaInterface)
+      let diaInterface: MesesInterface =
+      {
+        Fecha: datos.Fecha[i],
+        variable: datos.variable[i],
+        year: datos.year[i],
+        numberDay: datos.numberDay[i],
+        MesDate: datos.MesDate[i]
+      }
+      meses.push(diaInterface)
 
     }
 
@@ -165,17 +165,17 @@ export class MainComponent implements OnInit {
 
   }
   datosPredicciones(datos) {
-    let predicciones : PrediccionesInterface[] = []
+    let predicciones: PrediccionesInterface[] = []
     for (let i in datos.cases) {
-        let prediccion : PrediccionesInterface =
-        {
-          casos: Math.trunc(parseInt(datos.cases[i])),
-          fecha : datos.fecha[i],
-          fechaNumber: datos.fechaNumber[i],
-          stringMes: datos.stringMes[i]
+      let prediccion: PrediccionesInterface =
+      {
+        casos: Math.trunc(parseInt(datos.cases[i])),
+        fecha: datos.fecha[i],
+        fechaNumber: datos.fechaNumber[i],
+        stringMes: datos.stringMes[i]
 
-        }
-        predicciones.push(prediccion)
+      }
+      predicciones.push(prediccion)
 
     }
 
@@ -183,8 +183,7 @@ export class MainComponent implements OnInit {
     //this.getRefCountWord(array, this.componentRefBigramasTotal, this.chartOptionsListatodosbigrmTotal,this.compDynamicContainerBiTotal)
 
   }
-  codesProcess(codes,countries)
-  {
+  codesProcess(codes, countries) {
     let listadoCodes = []
     // tslint:disable-next-line: forin
     for (let i in codes) {
@@ -196,74 +195,82 @@ export class MainComponent implements OnInit {
     this.codesIncidence = listadoCodes
   }
 
-  compare( a, b ) {
+  compare(a, b) {
     let numerOne = parseInt(a[3])
     let numberTwo = parseInt(b[3])
-    if ( numerOne < numberTwo ){
+    if (numerOne < numberTwo) {
       return -1;
     }
-    if ( numerOne > numberTwo ){
+    if (numerOne > numberTwo) {
       return 1;
     }
     return 0;
   }
 
 
-  disntintos(datos)
-  {
+  disntintos(datos) {
     var distinct = []
-    for (var i = 0; i < datos.length; i++)
-    {
-      if(distinct.filter(x=>x==datos[i])[0].length==0)
-        {
-          distinct.push(datos[i].age)
-        }
+    for (var i = 0; i < datos.length; i++) {
+      if (distinct.filter(x => x == datos[i])[0].length == 0) {
+        distinct.push(datos[i].age)
+      }
     }
-     return distinct
+    return distinct
 
   }
 
-onHide() {
-  this.close = true;
-}
-sizeScreen(size, sidebar) {
-  if (size <= this.movil) {
-    this.tamano = "100%";
+  onHide() {
+    this.close = true;
+  }
+  sizeScreen(size, sidebar) {
+    if (size <= this.movil) {
+      this.tamano = "100%";
+
+    }
+    else if (size <= this.table) {
+      this.tamano = "100%";
+
+    }
+    else if (size <= this.desktop) {
+      this.tamano = "45%";
+
+    }
+    else if (size <= this.wide) {
+      this.tamano = "45%";
+
+    }
+    else {
+      this.tamano = "50%";
+    }
+
 
   }
-  else if (size <= this.table) {
-    this.tamano = "100%";
 
+  monthYear(fecha, años) {
+    let arrayString: any[] = [];
+    let arrayDateIncence: DateIncident[] = []
+    for (let i in fecha) {
+
+      let dataIncidence: DateIncident = {
+        mes: fecha[i],
+        ano: años[i]
+      }
+      arrayDateIncence = [...arrayDateIncence, dataIncidence]
+
+    }
+    arrayDateIncence.sort((a, b) => {
+      return a.ano - a.ano
+    })
+    for (let dateIncence of arrayDateIncence) {
+      let date = dateIncence.mes + ' - ' + dateIncence.ano
+      arrayString.push(date)
+    }
+
+    this.dates = Array.from(new Set(arrayString.map(x => {
+      return x;
+    })))
   }
-  else if (size <= this.desktop) {
-    this.tamano = "45%";
-
-  }
-  else if (size <= this.wide) {
-    this.tamano = "45%";
-
-  }
-  else {
-    this.tamano = "50%";
-  }
-
-
-}
-
-monthYear(fecha,años)
-{
-  let arrayString: any[] = [];
-  for (let i in fecha) {
-
-    let date = fecha[i] + ' - ' + años[i]
-    arrayString.push(date)
-  }
-  this.dates = Array.from(new Set(arrayString.map(x => {
-    return x;
-  })))
-}
-setSpinner(event)
-{
+  setSpinner(event) {
     this.spinner = event
-}
+  }
 }

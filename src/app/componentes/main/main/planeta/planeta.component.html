@@ -6,6 +6,7 @@
         (change)="changeDate()"
         name="selectDate"
       >
+        <option value="">Select the incident history</option>
         <option *ngFor="let date of dates">
           {{ date }}
         </option>
