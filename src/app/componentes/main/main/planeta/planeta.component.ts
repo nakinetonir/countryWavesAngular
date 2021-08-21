@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input,EventEmitter, HostListener} from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, HostListener } from '@angular/core';
 import { MainService } from '../main.service'
 
 import * as Highcharts from "highcharts/highmaps";
@@ -16,7 +16,7 @@ let worldMap = require('@highcharts/map-collection/custom/world.geo.json');
   styleUrls: ['./planeta.component.scss']
 })
 export class PlanetaComponent implements OnInit {
-  datosOk : boolean = false
+  datosOk: boolean = false
   codesIncidenceInput
   selectDate
   @Output() country = new EventEmitter(null)
@@ -82,30 +82,26 @@ export class PlanetaComponent implements OnInit {
     ]
   };
 
-  constructor(private _ms:MainService) { }
+  constructor(private _ms: MainService) { }
 
   ngOnInit(): void {
 
   }
-  selectCountry(event)
-  {
-     if(event.point && event.point.name && event.point.name == "United States of America")
-      {
-          this.country.next('US')
-      }
-      else if(event.point && event.point.name)
-      {
-          this.country.next(event.point.name)
-      }
+  selectCountry(event) {
+    if (event.point && event.point.name && event.point.name == "United States of America") {
+      this.country.next('US')
+    }
+    else if (event.point && event.point.name) {
+      this.country.next(event.point.name)
+    }
 
   }
-  loadCodesIncidence(codes)
-  {
+  loadCodesIncidence(codes) {
     //let datosXArray = codes.datos[1] as Array<any>;
     //let datosYArray = codes.grafica.datos[0] as Array<any>;
-   // this.updateData(datosXArray, datosYArray);
-   this.chartOptions.series[0].data = codes
-   this.datosOk = true
+    // this.updateData(datosXArray, datosYArray);
+    this.chartOptions.series[0].data = codes
+    this.datosOk = true
   }
 
   updateData(x, y) {
@@ -118,8 +114,7 @@ export class PlanetaComponent implements OnInit {
 
   }
 
-  codesProcess(codes,countries)
-  {
+  codesProcess(codes, countries) {
     let listadoCodes = []
     // tslint:disable-next-line: forin
     for (let i in codes) {
@@ -132,27 +127,29 @@ export class PlanetaComponent implements OnInit {
   }
 
 
-  changeDate()
-  {
+  changeDate() {
+
+    if (this.selectDate) {
       this.spinner.next(true)
       let month = this.selectDate.split('-')[0].trim()
       let year = this.selectDate.split('-')[1].trim()
-      this._ms.postIncidenciaInCountriesByDate(month,year).subscribe(
-          x=>{
-            let incidenciaInCountries = JSON.parse(x["incidenciaInCountriesByDate"])
-            let incidenciaInCountriesCodes = incidenciaInCountries.Code
-            let incidenciaInCountriesCountry = incidenciaInCountries.incidencia
-            this.codesProcess(incidenciaInCountriesCodes,incidenciaInCountriesCountry)
-            this.spinner.next(false)
-          },
-          error=>
-          {
-            this.spinner.next(false)
-          }
+      this._ms.postIncidenciaInCountriesByDate(month, year).subscribe(
+        x => {
+          let incidenciaInCountries = JSON.parse(x["incidenciaInCountriesByDate"])
+          let incidenciaInCountriesCodes = incidenciaInCountries.Code
+          let incidenciaInCountriesCountry = incidenciaInCountries.incidencia
+          this.codesProcess(incidenciaInCountriesCodes, incidenciaInCountriesCountry)
+          this.spinner.next(false)
+        },
+        error => {
+          this.spinner.next(false)
+        }
       )
-  }
-
-
+    }
 
   }
+
+
+
+}
 
