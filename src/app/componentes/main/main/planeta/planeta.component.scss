@@ -8,3 +8,18 @@
 #wrapper {
   text-align: center;
 }
+
+
+
+
+.planet {
+  margin-top: 8rem;
+}
+
+
+
+@media only screen and (max-width: 56.25em) {
+  .planet {
+    margin-top: 0.8rem;
+  }
+}
