@@ -1,16 +1,17 @@
 <div class="button__position">
   <div class="row">
     <div class="col-8 col-sm-8 col-md-3 col-lg-3">
-      <button
-        type="button"
-        class="btn btn-outline-primary btn-block"
-        (click)="mostrar('ano')"
-      >
-        Per year
-      </button>
+      <ng-multiselect-dropdown [placeholder]="'Years'" [data]="yearsInput" [(ngModel)]="yearFilter"
+        [settings]="dropdownSettingsYears" (onSelect)="getYear($event, true)" (onDeSelect)="getYear($event, false)"
+        (onDeSelectAll)="onDeSelectAllYearFunct($event)" (onSelectAll)="onSelectAllYearFunct($event)">
+      </ng-multiselect-dropdown>
     </div>
     <div class="col-8 col-sm-8 col-md-3 col-lg-3">
-    <!--
+
+      <button type="button" class="btn btn-outline-primary btn-block" (click)="mostrar('ano')">
+        Per year
+      </button>
+      <!--
       <select
         class="form-control blue--border"
         [(ngModel)]="selectYears"
@@ -21,47 +22,29 @@
           {{ year }}
         </option>
       </select>-->
-       <ng-multiselect-dropdown
-        [placeholder]="'Years'"
-        [data]="yearsInput"
-        [(ngModel)]="yearFilter"
-        [settings]="dropdownSettingsYears"
-        (onSelect)="getYear($event, true)"
-        (onDeSelect)="getYear($event, false)"
-        (onDeSelectAll)="onDeSelectAllYearFunct($event)"
-        (onSelectAll)="onSelectAllYearFunct($event)"
-      >
-      </ng-multiselect-dropdown>
+
     </div>
   </div>
   <div class="row separed">
     <div class="col-8 col-sm-8 col-md-3 col-lg-3">
-      <button
-        type="button"
-        class="btn btn-outline-primary btn-block"
-        [disabled]="!buttonMonths"
-        (click)="mostrar('mes')"
-      >
-        Per month
-      </button>
+      <ng-multiselect-dropdown [placeholder]="'Months'" [data]="mesesSort" [(ngModel)]="mesFilter"
+        [settings]="dropdownSettings" (onSelect)="getMonth($event, true)" (onDeSelect)="getMonth($event, false)"
+        (onDeSelectAll)="onDeSelectAllMonthFunct($event)" (onSelectAll)="onSelectAllMonthFunct($event)">
+      </ng-multiselect-dropdown>
     </div>
     <div class="col-8 col-sm-8 col-md-3 col-lg-3" *ngIf="mesesOk">
-      <ng-multiselect-dropdown
-        [placeholder]="'Months'"
-        [data]="mesesSort"
-        [(ngModel)]="mesFilter"
-        [settings]="dropdownSettings"
-        (onSelect)="getMonth($event, true)"
-        (onDeSelect)="getMonth($event, false)"
-        (onDeSelectAll)="onDeSelectAllMonthFunct($event)"
-        (onSelectAll)="onSelectAllMonthFunct($event)"
-      >
-      </ng-multiselect-dropdown>
+
+
+      <button type="button" class="btn btn-outline-primary btn-block" [disabled]="!buttonMonths"
+        (click)="mostrar('mes')">
+        Per month
+      </button>
+
 
     </div>
 
   </div>
- <!--<div class="row separed">
+  <!--<div class="row separed">
     <div class="col-8 col-sm-8 col-md-3 col-lg-3">
       <button
         type="button"
@@ -89,31 +72,24 @@
   </div>-->
   <h3 class="h3_day">
     <i class="pi pi-calendar"></i>
-    <span class="left">{{ fechaDiaDato | date: " dd MMM yyyy" }} </span
-    ><i class="pi pi-chart-bar left" title="Daily cases"></i>
-    <span class="right">{{ totalDiaDato }}</span
-    ><!---->
-    <i title="Notification rate"
-      class="pi pi-chart-line incidenciaIcon"
-      *ngIf="incidenciaInput != -1"
-    ></i>
+    <span class="left">{{ fechaDiaDato | date: " dd MMM yyyy" }} </span><i class="pi pi-chart-bar left"
+      title="Daily cases"></i>
+    <span class="right">{{ totalDiaDato }}</span>
+    <!---->
+    <i title="Notification rate" class="pi pi-chart-line incidenciaIcon" *ngIf="incidenciaInput != -1"></i>
     <span class="incidencia" *ngIf="incidenciaInput != -1">{{
       incidenciaInput
-    }}</span>
+      }}</span>
   </h3>
 </div>
 <div *ngIf="desktopBoolean">
   <br />
   <br />
 </div>
-<div *ngIf="mostrarAno"   class="graficas__body" id="top">
- <div *ngFor="let datos of filtrosYears; let i = index">
-    <highcharts-chart
-      [Highcharts]="highcharts"
-      [options]="optionsYear[i]"
-      style="width: 80%; height: 80%; display: block"
-      [(update)]="datosYearOk"
-    >
+<div *ngIf="mostrarAno" class="graficas__body" id="top">
+  <div *ngFor="let datos of filtrosYears; let i = index">
+    <highcharts-chart [Highcharts]="highcharts" [options]="optionsYear[i]"
+      style="width: 80%; height: 80%; display: block" [(update)]="datosYearOk">
     </highcharts-chart>
     <br />
     <br />
@@ -122,11 +98,8 @@
 </div>
 <div *ngIf="mostrarMes" class="graficas__body" id="top">
   <div *ngFor="let datos of filtrosMonth; let i = index">
-    <highcharts-chart
-      [Highcharts]="highcharts"
-      [options]="optionsMonth[i]"
-      style="width: 80%; height: 80%; display: block"
-    >
+    <highcharts-chart [Highcharts]="highcharts" [options]="optionsMonth[i]"
+      style="width: 80%; height: 80%; display: block">
     </highcharts-chart>
     <br />
     <br />
