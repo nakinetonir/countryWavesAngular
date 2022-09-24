@@ -65,7 +65,7 @@ export class PlanetaComponent implements OnInit {
     series: [
       {
         type: "map",
-        name: "Random data",
+        name: "Incident Updates",
         states: {
           hover: {
             color: "#BADA55"
