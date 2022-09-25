@@ -42,6 +42,7 @@ export class MainComponent implements OnInit {
   incidenciaInCountriesCountry
   codesIncidence
   dates
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     let sidebar = document.getElementById('sidebar')
@@ -68,7 +69,10 @@ export class MainComponent implements OnInit {
         this.monthYear(fechaTotal, yearsTotal)
         this.spinner = false
       }
-    )
+    ),
+    error => {
+      this.spinner = false
+    }
   }
 
   getIncidenciaInCountries() {
@@ -81,7 +85,10 @@ export class MainComponent implements OnInit {
           this.codesProcess(this.incidenciaInCountriesCodes, this.incidenciaInCountriesCountry)
         }
       }
-    )
+    ),
+        error => {
+          this.spinner = false
+        }
   }
 
   selectCountry(event) {
